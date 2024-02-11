@@ -1,0 +1,301 @@
+<script>
+
+var strDieFaces = "12345"      // the faces used
+var intChooseFrom = Math.floor(strDieFaces.length / 2 + 1);          // how much of the face list to choose from (from the start of the list)
+var intRollLength = 12;         // number of turns of the die before it stops
+var intLastTurnSpeed = 500;       // the number of milliseconds the final turn of the die takes
+
+var intTurnsRemaining;          // keeps count of the turn left to do in a roll
+var intNextTurnSpeed;           // how long to wait before turning the die (so the reciprocal of the natural turns/second speed)
+var intTurnDeceleration;        // the increase in wait time between each turn
+
+var intNumberOfPlayers = 12;     // number of current players in the game
+var intRunNumber = 0;           // start with no current run
+var intRunningTotal = 0;              // the current total of the current run
+
+function startRun() {
+  intRunNumber++;                                 // next run number
+  intRunningTotal = 0;                            // restart the totaliser
+  document.getElementById("runningTotal").innerHTML = intRunningTotal;    // and show it
+  for (var i = 1; i <= intNumberOfPlayers; i++) {                   // reenable the players
+    document.getElementById("player" + i).style.backgroundColor = "lightgreen";
+  }
+  document.getElementById("runButton").disabled = true;
+  rollDie();
+}
+
+function endRun() {
+  // stick any players who aren't stuck
+  // check as doing that for the high score
+  var intHighScore = 0;
+  var intHighScorerID;
+  for (var i = 1; i <= intNumberOfPlayers; i++) {
+    stick(i);
+    document.getElementById("player" + i + "total").style.backgroundColor = "lightblue";      // remove any high score highlight
+    if (parseInt(document.getElementById("player" + i + "total").innerHTML) > intHighScore) {
+      intHighScorerID = i;
+      intHighScore = parseInt(document.getElementById("player" + i + "total").innerHTML);
+    }
+  }
+  if (intHighScorerID) document.getElementById("player" + intHighScorerID + "total").style.backgroundColor = "pink";
+  document.getElementById("rollButton").disabled = true;
+  document.getElementById("runButton").disabled = false;
+}
+
+function rollDie() {
+  document.getElementById("rollButton").disabled = true;
+  intTurnsRemaining = intRollLength;
+  intNextTurnSpeed = 0;
+  intTurnDeceleration = Math.round(intLastTurnSpeed / intRollLength);
+  turnDie();
+}
+
+function turnDie() {
+  var intFaceIndex = Math.floor(intChooseFrom * Math.random());      // arrays/strings are zero indexed
+  var strFace = strDieFaces[intFaceIndex];
+  strDieFaces = strDieFaces.substring(0, intFaceIndex) + strDieFaces.substring(intFaceIndex + 1) + strDieFaces.charAt(intFaceIndex);    // send to the end
+  document.getElementById("die").innerHTML = strFace;
+  intTurnsRemaining--;
+  intNextTurnSpeed += intTurnDeceleration;        // slow down the die as it turns
+  if (intTurnsRemaining) {                        // set up the next turn if required
+    setTimeout(turnDie, intNextTurnSpeed);
+  } else {
+    intRollValue = parseInt(strFace);
+    if (intRollValue > 1) {
+      intRunningTotal += Math.floor(strFace);
+      document.getElementById("rollButton").disabled = false;
+    } else {
+      intRunningTotal = 0;
+      endRun();
+    }
+    document.getElementById("runningTotal").innerHTML = intRunningTotal;
+  }
+}
+
+function stick(intPlayerID) {
+  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgrey") return;       // can't stick if stuck
+  document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgrey";
+  var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
+  document.getElementById(strRunCellID).innerHTML = intRunningTotal;
+  // calc the player's new total
+  var intPlayerTotal = 0;
+  for (var i = 1; i <= intRunNumber; i++) {
+    var strRunCellID = "player" + intPlayerID + "run" + i;
+    var intPlayerRunScore = parseInt(document.getElementById(strRunCellID).innerHTML);
+    intPlayerTotal += intPlayerRunScore
+  }
+  var strTotalCellID = "player" + intPlayerID + "total";
+  document.getElementById(strTotalCellID).innerHTML = intPlayerTotal;
+  if (isEveryoneStuck()) endRun();
+}
+
+function isEveryoneStuck() {
+  var blnEveryoneStuck = true;                      // assume true then check if anyone isn't
+  for (var i = 1; i <= intNumberOfPlayers; i++) {
+    if (document.getElementById("player" + i).style.backgroundColor == "lightgreen") blnEveryoneStuck = false;
+  }
+  return blnEveryoneStuck;
+}
+</script>
+
+<!-- use grid-template -->
+<div style="display: grid; width: 100%; grid-template-columns: 200px 1fr;">
+
+<div><!-- first column -->
+
+<h1 style="font-size:36px;">Greedy Pig</h1>
+
+<div>
+<table border style="margin:20px;width:60px;">
+  <tr><td style="background-color: lightyellow;text-align: center;">
+    <span id="die" style="font-size:48px;">-</span>
+  </tr></td>
+</table>
+<button id="rollButton" disabled  style="margin-left:30px;" onClick="rollDie()">Roll</button>
+</div>
+
+<div style="font-size:48px;margin-top:20px;margin-bottom:20px;">Run: <span id="runningTotal">-</span></div>
+
+<div>
+<button id="runButton" onClick="startRun()">New Run</button>
+</div>
+
+</div><!-- end first column -->
+
+<div><!-- second column -->
+
+<table border  style="font-size:24px;">
+<tr>
+<td id="player1" style="background-color: lightgreen;" onClick="stick(1)">Elissa</td>
+<td id="player1run1" width="30px" style="text-align: center;"></td>
+<td id="player1run2" width="30px" style="text-align: center;"></td>
+<td id="player1run3" width="30px" style="text-align: center;"></td>
+<td id="player1run4" width="30px" style="text-align: center;"></td>
+<td id="player1run5" width="30px" style="text-align: center;"></td>
+<td id="player1run6" width="30px" style="text-align: center;"></td>
+<td id="player1run7" width="30px" style="text-align: center;"></td>
+<td id="player1run8" width="30px" style="text-align: center;"></td>
+<td id="player1run9" width="30px" style="text-align: center;"></td>
+<td id="player1run10" width="30px" style="text-align: center;"></td>
+<td id="player1total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player2" style="background-color: lightgreen;" onClick="stick(2)">Hafsa</td>
+<td id="player2run1" width="30px" style="text-align: center;"></td>
+<td id="player2run2" width="30px" style="text-align: center;"></td>
+<td id="player2run3" width="30px" style="text-align: center;"></td>
+<td id="player2run4" width="30px" style="text-align: center;"></td>
+<td id="player2run5" width="30px" style="text-align: center;"></td>
+<td id="player2run6" width="30px" style="text-align: center;"></td>
+<td id="player2run7" width="30px" style="text-align: center;"></td>
+<td id="player2run8" width="30px" style="text-align: center;"></td>
+<td id="player2run9" width="30px" style="text-align: center;"></td>
+<td id="player2run10" width="30px" style="text-align: center;"></td>
+<td id="player2total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player3" style="background-color: lightgreen;" onClick="stick(3)">Issa</td>
+<td id="player3run1" width="30px" style="text-align: center;"></td>
+<td id="player3run2" width="30px" style="text-align: center;"></td>
+<td id="player3run3" width="30px" style="text-align: center;"></td>
+<td id="player3run4" width="30px" style="text-align: center;"></td>
+<td id="player3run5" width="30px" style="text-align: center;"></td>
+<td id="player3run6" width="30px" style="text-align: center;"></td>
+<td id="player3run7" width="30px" style="text-align: center;"></td>
+<td id="player3run8" width="30px" style="text-align: center;"></td>
+<td id="player3run9" width="30px" style="text-align: center;"></td>
+<td id="player3run10" width="30px" style="text-align: center;"></td>
+<td id="player3total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player4" style="background-color: lightgreen;" onClick="stick(4)">Jad</td>
+<td id="player4run1" width="30px" style="text-align: center;"></td>
+<td id="player4run2" width="30px" style="text-align: center;"></td>
+<td id="player4run3" width="30px" style="text-align: center;"></td>
+<td id="player4run4" width="30px" style="text-align: center;"></td>
+<td id="player4run5" width="30px" style="text-align: center;"></td>
+<td id="player4run6" width="30px" style="text-align: center;"></td>
+<td id="player4run7" width="30px" style="text-align: center;"></td>
+<td id="player4run8" width="30px" style="text-align: center;"></td>
+<td id="player4run9" width="30px" style="text-align: center;"></td>
+<td id="player4run10" width="30px" style="text-align: center;"></td>
+<td id="player4total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player5" style="background-color: lightgreen;" onClick="stick(5)">Jenna</td>
+<td id="player5run1" width="30px" style="text-align: center;"></td>
+<td id="player5run2" width="30px" style="text-align: center;"></td>
+<td id="player5run3" width="30px" style="text-align: center;"></td>
+<td id="player5run4" width="30px" style="text-align: center;"></td>
+<td id="player5run5" width="30px" style="text-align: center;"></td>
+<td id="player5run6" width="30px" style="text-align: center;"></td>
+<td id="player5run7" width="30px" style="text-align: center;"></td>
+<td id="player5run8" width="30px" style="text-align: center;"></td>
+<td id="player5run9" width="30px" style="text-align: center;"></td>
+<td id="player5run10" width="30px" style="text-align: center;"></td>
+<td id="player5total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player6" style="background-color: lightgreen;" onClick="stick(6)">Jibril</td>
+<td id="player6run1" width="30px" style="text-align: center;"></td>
+<td id="player6run2" width="30px" style="text-align: center;"></td>
+<td id="player6run3" width="30px" style="text-align: center;"></td>
+<td id="player6run4" width="30px" style="text-align: center;"></td>
+<td id="player6run5" width="30px" style="text-align: center;"></td>
+<td id="player6run6" width="30px" style="text-align: center;"></td>
+<td id="player6run7" width="30px" style="text-align: center;"></td>
+<td id="player6run8" width="30px" style="text-align: center;"></td>
+<td id="player6run9" width="30px" style="text-align: center;"></td>
+<td id="player6run10" width="30px" style="text-align: center;"></td>
+<td id="player6total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player7" style="background-color: lightgreen;" onClick="stick(7)">Julian</td>
+<td id="player7run1" width="30px" style="text-align: center;"></td>
+<td id="player7run2" width="30px" style="text-align: center;"></td>
+<td id="player7run3" width="30px" style="text-align: center;"></td>
+<td id="player7run4" width="30px" style="text-align: center;"></td>
+<td id="player7run5" width="30px" style="text-align: center;"></td>
+<td id="player7run6" width="30px" style="text-align: center;"></td>
+<td id="player7run7" width="30px" style="text-align: center;"></td>
+<td id="player7run8" width="30px" style="text-align: center;"></td>
+<td id="player7run9" width="30px" style="text-align: center;"></td>
+<td id="player7run10" width="30px" style="text-align: center;"></td>
+<td id="player7total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player8" style="background-color: lightgreen;" onClick="stick(8)">Leo</td>
+<td id="player8run1" width="30px" style="text-align: center;"></td>
+<td id="player8run2" width="30px" style="text-align: center;"></td>
+<td id="player8run3" width="30px" style="text-align: center;"></td>
+<td id="player8run4" width="30px" style="text-align: center;"></td>
+<td id="player8run5" width="30px" style="text-align: center;"></td>
+<td id="player8run6" width="30px" style="text-align: center;"></td>
+<td id="player8run7" width="30px" style="text-align: center;"></td>
+<td id="player8run8" width="30px" style="text-align: center;"></td>
+<td id="player8run9" width="30px" style="text-align: center;"></td>
+<td id="player8run10" width="30px" style="text-align: center;"></td>
+<td id="player8total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player9" style="background-color: lightgreen;" onClick="stick(9)">Lisa</td>
+<td id="player9run1" width="30px" style="text-align: center;"></td>
+<td id="player9run2" width="30px" style="text-align: center;"></td>
+<td id="player9run3" width="30px" style="text-align: center;"></td>
+<td id="player9run4" width="30px" style="text-align: center;"></td>
+<td id="player9run5" width="30px" style="text-align: center;"></td>
+<td id="player9run6" width="30px" style="text-align: center;"></td>
+<td id="player9run7" width="30px" style="text-align: center;"></td>
+<td id="player9run8" width="30px" style="text-align: center;"></td>
+<td id="player9run9" width="30px" style="text-align: center;"></td>
+<td id="player9run10" width="30px" style="text-align: center;"></td>
+<td id="player9total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player10" style="background-color: lightgreen;" onClick="stick(10)">Maryam</td>
+<td id="player10run1" width="30px" style="text-align: center;"></td>
+<td id="player10run2" width="30px" style="text-align: center;"></td>
+<td id="player10run3" width="30px" style="text-align: center;"></td>
+<td id="player10run4" width="30px" style="text-align: center;"></td>
+<td id="player10run5" width="30px" style="text-align: center;"></td>
+<td id="player10run6" width="30px" style="text-align: center;"></td>
+<td id="player10run7" width="30px" style="text-align: center;"></td>
+<td id="player10run8" width="30px" style="text-align: center;"></td>
+<td id="player10run9" width="30px" style="text-align: center;"></td>
+<td id="player10run10" width="30px" style="text-align: center;"></td>
+<td id="player10total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player11" style="background-color: lightgreen;" onClick="stick(11)">Raena</td>
+<td id="player11run1" width="30px" style="text-align: center;"></td>
+<td id="player11run2" width="30px" style="text-align: center;"></td>
+<td id="player11run3" width="30px" style="text-align: center;"></td>
+<td id="player11run4" width="30px" style="text-align: center;"></td>
+<td id="player11run5" width="30px" style="text-align: center;"></td>
+<td id="player11run6" width="30px" style="text-align: center;"></td>
+<td id="player11run7" width="30px" style="text-align: center;"></td>
+<td id="player11run8" width="30px" style="text-align: center;"></td>
+<td id="player11run9" width="30px" style="text-align: center;"></td>
+<td id="player11run10" width="30px" style="text-align: center;"></td>
+<td id="player11total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player12" style="background-color: lightgreen;" onClick="stick(12)">Rebecca</td>
+<td id="player12run1" width="30px" style="text-align: center;"></td>
+<td id="player12run2" width="30px" style="text-align: center;"></td>
+<td id="player12run3" width="30px" style="text-align: center;"></td>
+<td id="player12run4" width="30px" style="text-align: center;"></td>
+<td id="player12run5" width="30px" style="text-align: center;"></td>
+<td id="player12run6" width="30px" style="text-align: center;"></td>
+<td id="player12run7" width="30px" style="text-align: center;"></td>
+<td id="player12run8" width="30px" style="text-align: center;"></td>
+<td id="player12run9" width="30px" style="text-align: center;"></td>
+<td id="player12run10" width="30px" style="text-align: center;"></td>
+<td id="player12total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+</table>
+</div>
+
+</div><!-- end second column -->
+
+</div> <!-- End grid -->
