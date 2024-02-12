@@ -35,15 +35,20 @@ function endRun() {
   // check as doing that for the high score
   var intHighScore = 0;
   var intHighScorerID;
-  for (var i = 1; i <= intNumberOfPlayers; i++) {
+  for (let i = 1; i <= intNumberOfPlayers; i++) {
     stick(i);
     document.getElementById("player" + i + "total").style.backgroundColor = "lightblue";      // remove any high score highlight
     if (parseInt(document.getElementById("player" + i + "total").innerHTML) > intHighScore) {
-      intHighScorerID = i;
       intHighScore = parseInt(document.getElementById("player" + i + "total").innerHTML);
     }
   }
-  if (intHighScorerID) document.getElementById("player" + intHighScorerID + "total").style.backgroundColor = "pink";
+  if (intHighScore > 0) {
+    for (let i = 1; i <= intNumberOfPlayers; i++) {
+      if (parseInt(document.getElementById("player" + i + "total").innerHTML) == intHighScore) {
+        document.getElementById("player" + i + "total").style.backgroundColor = "pink";
+      }
+	}
+  }
   document.getElementById("rollButton").disabled = true;
   document.getElementById("runButton").disabled = false;
 }
