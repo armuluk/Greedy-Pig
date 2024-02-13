@@ -1,0 +1,24 @@
+Undo
+
+Undo a 'stick' operation
+Can only be used while sticking is valid
+
+Algorithms:
+When a player sticks:
+  their status is changed from rolling to sticky
+  the current roll is shown in their roll record
+  their new total is calculated by adding the current roll to their previous total
+  their new total is displayed
+
+If a player tries to unstick
+  if their status is not sticky then no action is taken
+  else 
+  their status is changed from sticky to rolling
+  the current roll is removed from their roll record 
+  their current total is recalculated by summing their roll record
+  this total is displayed
+
+When a  roll ends:
+  the current roll is added to the roll record of players still rolling 
+  all current totals are replaced by their new total
+  all players have their status changed to stuck
