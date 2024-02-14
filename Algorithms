@@ -1,7 +1,7 @@
-Undo
+Unstick
 
 Undo a 'stick' operation
-Can only be used while sticking is valid
+Can only be used while player status is sticky
 
 Algorithms:
 When a player tries to stick:
@@ -34,6 +34,8 @@ When a run starts:
 
 When a roll starts:
   the die-status is changed to rolling
+  any sticky players have their status changed to stuck
+  their countdown timers are cancelled
 
 When a roll ends:
   the die-status is changed to showing
