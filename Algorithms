@@ -4,21 +4,36 @@ Undo a 'stick' operation
 Can only be used while sticking is valid
 
 Algorithms:
-When a player sticks:
-  their status is changed from rolling to sticky
-  the current roll is shown in their roll record
-  their new total is calculated by adding the current roll to their previous total
+When a player tries to stick:
+  if their status is not rolling then no action is taken
+  if the dice status is rolling then no action is taken
+  else 
+  player status is changed from rolling to sticky
+  the current roll is shown in the current entry of their roll record
+  their new total is calculated
   their new total is displayed
+  a countdown timer is started for triggering changing their status to stuck
 
 If a player tries to unstick
   if their status is not sticky then no action is taken
   else 
+  the countdown timer is cancelled
   their status is changed from sticky to rolling
-  the current roll is removed from their roll record 
-  their current total is recalculated by summing their roll record
+  the current entry of their roll record is erased
+  their current total is recalculated
   this total is displayed
 
-When a  roll ends:
+When a run ends:
   the current roll is added to the roll record of players still rolling 
   all current totals are replaced by their new total
   all players have their status changed to stuck
+
+When a run starts:
+  all players have their status changed to rolling
+  the die (dice) is (are) rolled 
+
+When a roll starts:
+  the die-status is changed to rolling
+
+When a roll ends:
+  the die-status is changed to showing
