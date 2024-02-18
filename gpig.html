@@ -19,7 +19,16 @@ var intNumberOfPlayers = 12;     // number of current players in the game
 var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;              // the current total of the current run
 
+function hideDieControls() {
+   document.getElementById("eltDieControls").style.display = 'none';
+}
+  
+function renumberDie(intHigh) {
+   strDieFaces = "123456789".substring(0, intHigh);
+}
+
 function startRun() {
+  hideDieControls();                                                                                                   //
   intRunNumber++;                                 // next run number
   intRunningTotal = 0;                            // restart the totaliser
   document.getElementById("runningTotal").innerHTML = intRunningTotal;    // and show it
@@ -116,6 +125,7 @@ function isEveryoneStuck() {
 
 <h1 style="font-size:36px;">Greedy Pig</h1>
 
+<div style="display: grid; width: 100%; grid-template-columns: 1fr 1fr;">
 <div>
 <table border style="margin:20px;width:60px;">
   <tr><td style="background-color: lightyellow;text-align: center;">
@@ -123,6 +133,14 @@ function isEveryoneStuck() {
   </tr></td>
 </table>
 <button id="rollButton" disabled  style="margin-left:30px;" onClick="rollDie()">Roll</button>
+</div>
+
+<div id="eltDieControls">
+Up to:<br>
+<input type="number" id="quantity" name="quantity" min="2" max="9" onFocusOut="renumberDie(this.value);">
+<br>
+<button>OK</button>
+</div>
 </div>
 
 <div style="font-size:48px;margin-top:20px;margin-bottom:20px;">Run: <span id="runningTotal">-</span></div>
