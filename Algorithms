@@ -24,7 +24,7 @@ If a player tries to unstick
   this new total is displayed
 
 When a run starts:
-  all players have their status changed to 'rolling'
+  all 'stuck' players have their status changed to 'rolling'
   the die (dice) is (are) rolled 
 
 When a roll starts:
@@ -45,14 +45,15 @@ When a roll ends:
     the run is ended
 
 When a run ends:
+  all 'rolling' players have their status changed to 'stuck'
   the current roll is added to the 'rolled' record of players still 'rolling' 
   all 'rolling' player totals are replaced by the new totals
-  all players have their status changed to 'stuck'
    
 
 
 
 Hide player
+Can not be used when in a run
 When a saved list is used to populate the 'field' there may be a participant who is absent
 This function allows the participant's name to be hidden - i.e. removed from the field
 
