@@ -1,41 +1,50 @@
 Unstick
 
 Undo a 'stick' operation
-Can only be used while player status is sticky
+Can only be used while player status is 'sticky'
 
 Algorithms:
 When a player tries to stick:
-  if their status is not rolling then no action is taken
-  if the dice status is rolling then no action is taken
+  if their status is not 'rolling' then no action is taken
+  if the dice status is 'rolling' then no action is taken
   else 
-  player status is changed from rolling to sticky
-  the current roll is shown in the current entry of their roll record
+  player status is changed from 'rolling' to 'sticky'
+  the current roll value is shown in the current entry of their 'rolled' record
   their new total is calculated
   their new total is displayed
-  a countdown timer is started for triggering changing their status to stuck
-
+  a countdown timer is started for triggering changing their status to 'stuck'
+  if no players are 'rolling' then the run is ended
 If a player tries to unstick
-  if their status is not sticky then no action is taken
+  if their status is not 'sticky' then no action is taken
   else 
   the countdown timer is cancelled
-  their status is changed from sticky to rolling
-  the current entry of their roll record is erased
+  their status is changed from 'sticky' to 'rolling'
+  the current entry of their 'rolled' record is erased
   their current total is recalculated
-  this total is displayed
+  this new total is displayed
 
 When a run ends:
-  the current roll is added to the roll record of players still rolling 
-  all current totals are replaced by their new total
-  all players have their status changed to stuck
+  the current roll is added to the 'rolled' record of players still 'rolling' 
+  all 'rolling' player totals are replaced by the new totals
+  all players have their status changed to 'stuck'
 
 When a run starts:
-  all players have their status changed to rolling
+  all players have their status changed to 'rolling'
   the die (dice) is (are) rolled 
 
 When a roll starts:
-  the die-status is changed to rolling
-  any sticky players have their status changed to stuck
-  their countdown timers are cancelled
+  the die-status is changed to 'rolling'
+  the 'roll button' is disabled
+  any 'sticky' players have their status changed to 'stuck'
+  the associated countdown timers are cancelled
 
 When a roll ends:
-  the die-status is changed to showing
+  the die-status is changed to 'showing'
+  the 'roll button' is enabled
+  if the value showing is not 1 then
+    the value showing is added to the current 'rolled' total
+    the current 'rolled' total is displayed
+  else
+    the current 'rolled' total is set to zero
+    the current 'rolled' total is displayed
+    the run is ended
