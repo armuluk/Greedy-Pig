@@ -1,9 +1,9 @@
-Unstick
+Algorithms:
 
+Unstick
 Undo a 'stick' operation
 Can only be used while player status is 'sticky'
 
-Algorithms:
 When a player tries to stick:
   if their status is not 'rolling' then no action is taken
   if the dice status is 'rolling' then no action is taken
@@ -22,11 +22,6 @@ If a player tries to unstick
   the current entry of their 'rolled' record is erased
   their current total is recalculated
   this new total is displayed
-
-When a run ends:
-  the current roll is added to the 'rolled' record of players still 'rolling' 
-  all 'rolling' player totals are replaced by the new totals
-  all players have their status changed to 'stuck'
 
 When a run starts:
   all players have their status changed to 'rolling'
@@ -48,3 +43,27 @@ When a roll ends:
     the current 'rolled' total is set to zero
     the current 'rolled' total is displayed
     the run is ended
+
+When a run ends:
+  the current roll is added to the 'rolled' record of players still 'rolling' 
+  all 'rolling' player totals are replaced by the new totals
+  all players have their status changed to 'stuck'
+   
+
+
+
+Hide player
+When a saved list is used to populate the 'field' there may be a participant who is absent
+This function allows the participant's name to be hidden - i.e. removed from the field
+
+When Edit is selected
+  All players - including 'scratched' players - are displayed on the scoreboard, formatted by status 'scratched' or 'stuck'
+  An 'OK' button is shown
+  
+Any player's status can be flipped between 'scratched' and 'stuck'
+
+When 'OK' is clicked
+  Only the 'stuck' players are displayed on the scoreboard
+  The 'OK' is hidden
+  
+  
