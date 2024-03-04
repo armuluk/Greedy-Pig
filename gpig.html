@@ -93,7 +93,14 @@ function turnDie() {
 }
 
 function flipstick(intPlayerID) {
-  stick(intPlayerID);
+  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgrey") {       // if stuck
+    unstick (intPlayerID);									    //  then unstick
+  } else {											    // if rolling
+    stick(intPlayerID);										    //   stick
+  }
+}
+
+function unstick(intPlayerID) {
 }
 
 function stick(intPlayerID) {
