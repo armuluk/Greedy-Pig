@@ -100,7 +100,10 @@ function flipstick(intPlayerID) {
   }
 }
 
-function unstick(intPlayerID) {
+function unstick(intPlayerID) {									   	// set status to running
+  document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgreen";
+  var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
+  document.getElementById(strRunCellID).innerHTML = '';
 }
 
 function stick(intPlayerID) {
