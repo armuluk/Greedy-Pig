@@ -68,3 +68,17 @@ When 'OK' is clicked
   The 'OK' is hidden
   
   
+
+
+
+Create/Store/Select a field of players
+Different 'fields' of players (e.g. separate school classes) can be created, stored and then selected for a particular game.
+
+Select field
+List of fields available is shown
+User selects one
+Player names in that field are shown
+User can scratch some
+User then starts game
+
+Player names are added in order to the scoreboard
