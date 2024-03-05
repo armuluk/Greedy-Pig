@@ -19,12 +19,35 @@ var intNumberOfPlayers = 12;     // number of current players in the game
 var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;              // the current total of the current run
 
+var astrField = [
+	"6ieme",
+	"Elissa",
+	"Hafsa",
+	"Issa",
+	"Jad",
+	"Jenna",
+	"Jibril",
+	"Julian",
+	"Leo",
+	"Lisa",
+	"Maryam",
+	"Raena",
+	"Rebecca"
+];
+
 function hideDieControls() {
    document.getElementById("eltDieControls").style.display = 'none';
 }
   
 function renumberDie(intHigh) {
    strDieFaces = "123456789".substring(0, intHigh);
+}
+
+function startGame() {
+  for (let i = 1; i <= astrField.length; i++) {
+	  document.getElementById("player" + i).innerHTML = astrField[i];
+  }
+	
 }
 
 function startRun() {
@@ -163,13 +186,17 @@ Up to:<br>
 <button id="runButton" onClick="startRun()">New Run</button>
 </div>
 
+<div style="margin-top:20px;">
+<button id="gameButton" onClick="startGame()">New Game</button>
+</div>
+
 </div><!-- end first column -->
 
 <div><!-- second column -->
 
 <table border  style="font-size:24px;">
 <tr>
-<td id="player1" style="background-color: lightgreen;" onClick="flipstick(1)">Elissa</td>
+<td id="player1" style="background-color: lightgreen;" onClick="flipstick(1)"></td>
 <td id="player1run1" width="30px" style="text-align: center;"></td>
 <td id="player1run2" width="30px" style="text-align: center;"></td>
 <td id="player1run3" width="30px" style="text-align: center;"></td>
@@ -183,7 +210,7 @@ Up to:<br>
 <td id="player1total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player2" style="background-color: lightgreen;" onClick="flipstick(2)">Hafsa</td>
+<td id="player2" style="background-color: lightgreen;" onClick="flipstick(2)"></td>
 <td id="player2run1" width="30px" style="text-align: center;"></td>
 <td id="player2run2" width="30px" style="text-align: center;"></td>
 <td id="player2run3" width="30px" style="text-align: center;"></td>
@@ -197,7 +224,7 @@ Up to:<br>
 <td id="player2total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player3" style="background-color: lightgreen;" onClick="flipstick(3)">Issa</td>
+<td id="player3" style="background-color: lightgreen;" onClick="flipstick(3)"></td>
 <td id="player3run1" width="30px" style="text-align: center;"></td>
 <td id="player3run2" width="30px" style="text-align: center;"></td>
 <td id="player3run3" width="30px" style="text-align: center;"></td>
@@ -211,7 +238,7 @@ Up to:<br>
 <td id="player3total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player4" style="background-color: lightgreen;" onClick="flipstick(4)">Jad</td>
+<td id="player4" style="background-color: lightgreen;" onClick="flipstick(4)"></td>
 <td id="player4run1" width="30px" style="text-align: center;"></td>
 <td id="player4run2" width="30px" style="text-align: center;"></td>
 <td id="player4run3" width="30px" style="text-align: center;"></td>
@@ -225,7 +252,7 @@ Up to:<br>
 <td id="player4total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player5" style="background-color: lightgreen;" onClick="flipstick(5)">Jenna</td>
+<td id="player5" style="background-color: lightgreen;" onClick="flipstick(5)"></td>
 <td id="player5run1" width="30px" style="text-align: center;"></td>
 <td id="player5run2" width="30px" style="text-align: center;"></td>
 <td id="player5run3" width="30px" style="text-align: center;"></td>
@@ -239,7 +266,7 @@ Up to:<br>
 <td id="player5total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player6" style="background-color: lightgreen;" onClick="flipstick(6)">Jibril</td>
+<td id="player6" style="background-color: lightgreen;" onClick="flipstick(6)"></td>
 <td id="player6run1" width="30px" style="text-align: center;"></td>
 <td id="player6run2" width="30px" style="text-align: center;"></td>
 <td id="player6run3" width="30px" style="text-align: center;"></td>
@@ -253,7 +280,7 @@ Up to:<br>
 <td id="player6total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player7" style="background-color: lightgreen;" onClick="flipstick(7)">Julian</td>
+<td id="player7" style="background-color: lightgreen;" onClick="flipstick(7)"></td>
 <td id="player7run1" width="30px" style="text-align: center;"></td>
 <td id="player7run2" width="30px" style="text-align: center;"></td>
 <td id="player7run3" width="30px" style="text-align: center;"></td>
@@ -267,7 +294,7 @@ Up to:<br>
 <td id="player7total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player8" style="background-color: lightgreen;" onClick="flipstick(8)">Leo</td>
+<td id="player8" style="background-color: lightgreen;" onClick="flipstick(8)"></td>
 <td id="player8run1" width="30px" style="text-align: center;"></td>
 <td id="player8run2" width="30px" style="text-align: center;"></td>
 <td id="player8run3" width="30px" style="text-align: center;"></td>
@@ -281,7 +308,7 @@ Up to:<br>
 <td id="player8total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player9" style="background-color: lightgreen;" onClick="flipstick(9)">Lisa</td>
+<td id="player9" style="background-color: lightgreen;" onClick="flipstick(9)"></td>
 <td id="player9run1" width="30px" style="text-align: center;"></td>
 <td id="player9run2" width="30px" style="text-align: center;"></td>
 <td id="player9run3" width="30px" style="text-align: center;"></td>
@@ -295,7 +322,7 @@ Up to:<br>
 <td id="player9total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player10" style="background-color: lightgreen;" onClick="flipstick(10)">Maryam</td>
+<td id="player10" style="background-color: lightgreen;" onClick="flipstick(10)"></td>
 <td id="player10run1" width="30px" style="text-align: center;"></td>
 <td id="player10run2" width="30px" style="text-align: center;"></td>
 <td id="player10run3" width="30px" style="text-align: center;"></td>
@@ -309,7 +336,7 @@ Up to:<br>
 <td id="player10total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player11" style="background-color: lightgreen;" onClick="flipstick(11)">Raena</td>
+<td id="player11" style="background-color: lightgreen;" onClick="flipstick(11)"></td>
 <td id="player11run1" width="30px" style="text-align: center;"></td>
 <td id="player11run2" width="30px" style="text-align: center;"></td>
 <td id="player11run3" width="30px" style="text-align: center;"></td>
@@ -323,7 +350,7 @@ Up to:<br>
 <td id="player11total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 <tr>
-<td id="player12" style="background-color: lightgreen;" onClick="flipstick(12)">Rebecca</td>
+<td id="player12" style="background-color: lightgreen;" onClick="flipstick(12)"></td>
 <td id="player12run1" width="30px" style="text-align: center;"></td>
 <td id="player12run2" width="30px" style="text-align: center;"></td>
 <td id="player12run3" width="30px" style="text-align: center;"></td>
