@@ -18,6 +18,7 @@ var intTurnDeceleration;        // the increase in wait time between each turn
 var intNumberOfPlayers = 12;     // number of current players in the game
 var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;              // the current total of the current run
+var isRunning = false;					// flag true when a run is ongoing
 
 var astrField = [
 	"6ieme",
@@ -44,7 +45,7 @@ function renumberDie(intHigh) {
 }
 
 function startGame() {
-  for (let i = 1; i <= astrField.length; i++) {
+  for (let i = 1; i < astrField.length; i++) {
 	  document.getElementById("player" + i).innerHTML = astrField[i];
   }
 	
@@ -59,6 +60,7 @@ function startRun() {
     document.getElementById("player" + i).style.backgroundColor = "lightgreen";
   }
   document.getElementById("runButton").disabled = true;
+	isRunning = true;
   rollDie();
 }
 
@@ -79,10 +81,11 @@ function endRun() {
       if (parseInt(document.getElementById("player" + i + "total").innerHTML) == intHighScore) {
         document.getElementById("player" + i + "total").style.backgroundColor = "pink";
       }
-	}
+		}
   }
   document.getElementById("rollButton").disabled = true;
   document.getElementById("runButton").disabled = false;
+	isRunning = false;
 }
 
 function rollDie() {
@@ -118,8 +121,8 @@ function turnDie() {
 function flipstick(intPlayerID) {
   if (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgrey") {       // if stuck
     unstick (intPlayerID);									    //  then unstick
-  } else {											    // if rolling
-    stick(intPlayerID);										    //   stick
+  } else if (isRunning) {											  // if running
+    stick(intPlayerID);									    //   make sticky
   }
 }
 
@@ -127,6 +130,10 @@ function unstick(intPlayerID) {									   	// set status to running
   document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgreen";
   var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
   document.getElementById(strRunCellID).innerHTML = '';
+}
+
+function stickify(intPlayerID) {
+	
 }
 
 function stick(intPlayerID) {
