@@ -19,6 +19,7 @@ var intNumberOfPlayers = 12;     // number of current players in the game
 var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;              // the current total of the current run
 var isRunning = false;					// flag true when a run is ongoing
+var isRolling = false;					// flag true when a die is rolling
 
 var astrField = [
 	"6ieme",
@@ -89,6 +90,8 @@ function endRun() {
 }
 
 function rollDie() {
+	isRolling = true;
+	stickStickies();																				// can't unstick now
   document.getElementById("rollButton").disabled = true;
   intTurnsRemaining = intRollLength;
   intNextTurnSpeed = 0;
@@ -115,14 +118,15 @@ function turnDie() {
       endRun();
     }
     document.getElementById("runningTotal").innerHTML = intRunningTotal;
+		isRolling = false;
   }
 }
 
 function flipstick(intPlayerID) {
-  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgrey") {       // if stuck
+  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "burlywood") {       // if stuck
     unstick (intPlayerID);									    //  then unstick
-  } else if (isRunning) {											  // if running
-    stick(intPlayerID);									    //   make sticky
+  } else if (isRunning && !isRolling && (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgreen")) {    	    // if game running, no die is rolling and player not stuck
+    stickify(intPlayerID);									    //   make sticky
   }
 }
 
@@ -133,7 +137,17 @@ function unstick(intPlayerID) {									   	// set status to running
 }
 
 function stickify(intPlayerID) {
-	
+  stick(intPlayerID);																																											// stick the player
+	if (isRunning) {
+  	document.getElementById("player" + intPlayerID).style.backgroundColor = "burlywood";									// if run still running flag player is only sticky not stuck
+	}
+}
+
+function stickStickies() {
+  for (var i = 1; i <= intNumberOfPlayers; i++) {
+    if (document.getElementById("player" + i).style.backgroundColor == "burlywood") 
+			document.getElementById("player" + i).style.backgroundColor = "lightgrey";							// stick any sticky players
+  }
 }
 
 function stick(intPlayerID) {
@@ -150,7 +164,9 @@ function stick(intPlayerID) {
   }
   var strTotalCellID = "player" + intPlayerID + "total";
   document.getElementById(strTotalCellID).innerHTML = intPlayerTotal;
-  if (isEveryoneStuck()) endRun();
+  if (isEveryoneStuck()) {
+		endRun();
+	}
 }
 
 function isEveryoneStuck() {
