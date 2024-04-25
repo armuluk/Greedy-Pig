@@ -82,3 +82,44 @@ User can scratch some
 User then starts game
 
 Player names are added in order to the scoreboard
+
+
+
+Ranking
+Assign a rank to each score
+Create a linked list referencing the scores such that the first link points to the highest score, the next to the next highest, etc
+Run through the list assigning a rank number to each score
+Time complexity O(n^2)
+Space complexity O(n)
+
+// create sorted linked list
+Set index to point to the first score.
+Set head to point to the first score.
+Set first score pointer/link to EndOfList
+Repeat 
+Set scoreIndex to point to the next score.
+Set linkIndex to point to the first link.
+If scoreToAdd > sortedScore then insert scoreToAdd before sortedScore
+If EndOfList reached then insert scoreToAdd after sortedScore at end of list
+Until score is inserted
+// generate ranks
+Set rankCount to 1
+Set equalRank to False
+Set index to point to the first score link.
+Repeat
+If equalRank is True then 
+  if current score != next linked score then
+    set equalRank to False
+  endif
+else (equalRank is False)
+  if current score != next linked score or current score is EndOfList
+    set rankValue to rankCount
+  else
+    set equalRank to True
+    set rankValue to rankCount + '='
+  endif
+endif
+set score rank to rankValue
+Set index to point to the linked score link.
+Increment rankCount
+Until EndOfList reached
