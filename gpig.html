@@ -62,7 +62,11 @@ function startGame() {
     document.getElementById("player" + intPlayerID + "total").innerHTML = "0";
 	}
 
-	intRunNumber = 0;           // start with no current run
+  intRunNumber = 0;           // start with no current run
+  // clear the roll record
+  for (let intFace = 1; intFace <= 6; intFace++) {
+    document.getElementById("face" + intFace).innerHTML = "0";
+  }
 }
 
 function startRun() {
@@ -218,11 +222,12 @@ Die is 1 to ...:<br>
 
 <div style="font-size:48px;margin-top:20px;margin-bottom:20px;">Run: <span id="runningTotal">-</span></div>
 
-<div>
+<div style="margin-bottom:20px;">
 <button id="runButton" onClick="startRun()">New Run</button>
 </div>
 
 <table border  style="font-size:18px;">
+<tr><th colspan=6>Roll Record</th></tr>
 <tr>
 <td id="face1" width="30px" style="text-align: center;">0</td>
 <td id="face2" width="30px" style="text-align: center;">0</td>
