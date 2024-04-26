@@ -95,16 +95,16 @@ function endRun() {
       if (parseInt(document.getElementById("player" + i + "total").innerHTML) == intHighScore) {
         document.getElementById("player" + i + "total").style.backgroundColor = "pink";
       }
-		}
+    }
   }
   document.getElementById("rollButton").disabled = true;
   document.getElementById("runButton").disabled = false;
-	isRunning = false;
+  isRunning = false;
 }
 
 function rollDie() {
-	isRolling = true;
-	stickStickies();																				// can't unstick now
+  isRolling = true;
+  stickStickies();												// can't unstick now
   document.getElementById("rollButton").disabled = true;
   intTurnsRemaining = intRollLength;
   intNextTurnSpeed = 0;
@@ -222,7 +222,18 @@ Die is 1 to ...:<br>
 <button id="runButton" onClick="startRun()">New Run</button>
 </div>
 
-<div style="margin-top:80px;">
+<table border  style="font-size:18px;">
+<tr>
+<td id="face1" width="30px" style="text-align: center;">0</td>
+<td id="face2" width="30px" style="text-align: center;">0</td>
+<td id="face3" width="30px" style="text-align: center;">0</td>
+<td id="face4" width="30px" style="text-align: center;">0</td>
+<td id="face5" width="30px" style="text-align: center;">0</td>
+<td id="face6" width="30px" style="text-align: center;">0</td>
+</tr>
+</table>
+	
+<div style="margin-top:20px;">
 <button id="gameButton" onClick="startGame()">New Game</button>
 </div>
 
