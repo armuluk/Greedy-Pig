@@ -125,9 +125,12 @@ function turnDie() {
   intNextTurnSpeed += intTurnDeceleration;        // slow down the die as it turns
   if (intTurnsRemaining) {                        // set up the next turn if required
     setTimeout(turnDie, intNextTurnSpeed);
-  } else {
+  } else {						// that was the last turn
     intRollValue = parseInt(strFace);
-    if (intRollValue > 1) {
+     // update the roll record
+    let eltRollAccumX = document.getElementById("face" + intRollValue);
+    ++eltRollAccumX.innerHTML;
+   if (intRollValue > 1) {
       intRunningTotal += Math.floor(strFace);
       document.getElementById("rollButton").disabled = false;
     } else {
@@ -222,12 +225,16 @@ Die is 1 to ...:<br>
 
 <div style="font-size:48px;margin-top:20px;margin-bottom:20px;">Run: <span id="runningTotal">-</span></div>
 
-<div style="margin-bottom:20px;">
-<button id="runButton" onClick="startRun()">New Run</button>
-</div>
-
 <table border  style="font-size:18px;">
 <tr><th colspan=6>Roll Record</th></tr>
+<tr style="text-align: center;background-color:lightgrey;">
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+</tr>
 <tr>
 <td id="face1" width="30px" style="text-align: center;">0</td>
 <td id="face2" width="30px" style="text-align: center;">0</td>
@@ -239,6 +246,10 @@ Die is 1 to ...:<br>
 </table>
 	
 <div style="margin-top:20px;">
+<button id="runButton" onClick="startRun()">New Run</button>
+</div>
+
+<div style="margin-top:40px;">
 <button id="gameButton" onClick="startGame()">New Game</button>
 </div>
 
