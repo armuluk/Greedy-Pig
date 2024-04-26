@@ -15,7 +15,7 @@ var intTurnsRemaining;          // keeps count of the turn left to do in a roll
 var intNextTurnSpeed;           // how long to wait before turning the die (so the reciprocal of the natural turns/second speed)
 var intTurnDeceleration;        // the increase in wait time between each turn
 
-var intNumberOfPlayers = 12;     // number of current players in the game
+var intNumberOfPlayers = 13;     // number of current players in the game
 var intMaxRuns = 10;
 var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;              // the current total of the current run
@@ -24,6 +24,7 @@ var isRolling = false;					// flag true when a die is rolling
 
 var astrField = [
 	"6ieme",
+	"Eleonor",
 	"Elissa",
 	"Hafsa",
 	"Issa",
@@ -425,6 +426,20 @@ Die is 1 to ...:<br>
 <td id="player12run9" width="30px" style="text-align: center;"></td>
 <td id="player12run10" width="30px" style="text-align: center;"></td>
 <td id="player12total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+</tr>
+<tr>
+<td id="player13" style="background-color: lightgreen;" onClick="flipstick(13)">Player 13</td>
+<td id="player13run1" width="30px" style="text-align: center;"></td>
+<td id="player13run2" width="30px" style="text-align: center;"></td>
+<td id="player13run3" width="30px" style="text-align: center;"></td>
+<td id="player13run4" width="30px" style="text-align: center;"></td>
+<td id="player13run5" width="30px" style="text-align: center;"></td>
+<td id="player13run6" width="30px" style="text-align: center;"></td>
+<td id="player13run7" width="30px" style="text-align: center;"></td>
+<td id="player13run8" width="30px" style="text-align: center;"></td>
+<td id="player13run9" width="30px" style="text-align: center;"></td>
+<td id="player13run10" width="30px" style="text-align: center;"></td>
+<td id="player13total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
 </tr>
 </table>
 </div>
