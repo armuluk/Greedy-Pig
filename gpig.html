@@ -97,17 +97,31 @@ function endRun() {
   // check as doing that for the high score
   var intHighScore = 0;
   var intHighScorerID;
+  var intHighRun = 0;
+  var intHighRunID;
   for (let i = 1; i <= intNumberOfPlayers; i++) {
     stick(i);
+    // do high score
     document.getElementById("player" + i + "total").style.backgroundColor = "lightblue";      // remove any high score highlight
     if (parseInt(document.getElementById("player" + i + "total").innerHTML) > intHighScore) {
       intHighScore = parseInt(document.getElementById("player" + i + "total").innerHTML);
+    }
+    // do high run
+    if (parseInt(document.getElementById("player" + i + "run" + intRunNumber).innerHTML) > intHighRun) {
+      intHighRun = parseInt(document.getElementById("player" + i + "run" + intRunNumber).innerHTML);
     }
   }
   if (intHighScore > 0) {
     for (let i = 1; i <= intNumberOfPlayers; i++) {
       if (parseInt(document.getElementById("player" + i + "total").innerHTML) == intHighScore) {
         document.getElementById("player" + i + "total").style.backgroundColor = "pink";
+      }
+    }
+  }
+  if (intHighRun > 0) {
+    for (let i = 1; i <= intNumberOfPlayers; i++) {
+      if (parseInt(document.getElementById("player" + i + "run" + intRunNumber).innerHTML) == intHighRun) {
+        document.getElementById("player" + i + "run" + intRunNumber).style.backgroundColor = "pink";
       }
     }
   }
