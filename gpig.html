@@ -6,8 +6,9 @@ You should have received a copy of the GNU Affero General Public License along w
 
 <script>
 
-var strDieFaces = "123456"      // the faces used
-var intChooseFrom = Math.floor(strDieFaces.length / 2 + 1);          // how much of the face list to choose from (from the start of the list)
+var strDieFaces;            // the faces to be used
+var intChooseFrom;          // how many of the face list to choose from (from the list start, regarded here as item 1)
+renumberDie(6);			// default to 6-sided die
 var intRollLength = 12;         // number of turns of the die before it stops
 var intLastTurnSpeed = 500;       // the number of milliseconds the final turn of the die takes
 
@@ -44,7 +45,8 @@ function hideDieControls() {
 }
   
 function renumberDie(intHigh) {
-   strDieFaces = "123456789".substring(0, intHigh);
+   strDieFaces = "123456789".substring(0, intHigh);		// the faces to be used
+  intChooseFrom = intHigh - 1;					// don't allow the most recently used face to be used again immediately
 }
 
 function startGame() {
@@ -111,7 +113,7 @@ function rollDie() {
   isRolling = true;
   stickStickies();												// can't unstick now
   document.getElementById("rollButton").disabled = true;
-  intTurnsRemaining = intRollLength;
+  intTurnsRemaining = intRollLength + (Math.random() < 0.5);               // add 'wobble' to keep 2-sided rolls random
   intNextTurnSpeed = 0;
   intTurnDeceleration = Math.round(intLastTurnSpeed / intRollLength);
   turnDie();
