@@ -54,20 +54,22 @@ function renumberDie(intHigh) {
 }
 
 function startGame() {
-	// set up player names
+  // set up player names
   for (let i = 1; i < astrField.length; i++) {
-	  document.getElementById("player" + i).innerHTML = astrField[i];
+    document.getElementById("player" + i).innerHTML = astrField[i];
   }
-  // clear previous game - player run score record
+  // clear previous game - player run score record highlights
   for (let intPlayerID = 1; intPlayerID < astrField.length; intPlayerID++) {
     for (let intRunNumber = 1; intRunNumber <= intMaxRuns; intRunNumber++) {
       document.getElementById("player" + intPlayerID + "run" + intRunNumber).innerHTML = "";
-		}
-	}
-	// clear player totals
+      document.getElementById("player" + intPlayerID + "run" + intRunNumber).style.backgroundColor = "white";
+    }
+  }
+  // clear player totals + highlights
   for (let intPlayerID = 1; intPlayerID < astrField.length; intPlayerID++) {
     document.getElementById("player" + intPlayerID + "total").innerHTML = "0";
-	}
+    document.getElementById("player" + intPlayerID + "total").style.backgroundColor = "lightblue";
+  }
 
   intRunNumber = 0;           // start with no current run
   // clear the roll record
