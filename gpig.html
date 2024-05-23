@@ -44,6 +44,10 @@ function hideDieControls() {
    document.getElementById("eltDieControls").style.display = 'none';
 }
   
+function showDieControls() {
+   document.getElementById("eltDieControls").style.display = 'block';
+}
+  
 function renumberDie(intHigh) {
    strDieFaces = "123456789".substring(0, intHigh);		// the faces to be used
   intChooseFrom = intHigh - 1;					// don't allow the most recently used face to be used again immediately
@@ -70,6 +74,9 @@ function startGame() {
   for (let intFace = 1; intFace <= 6; intFace++) {
     document.getElementById("face" + intFace).innerHTML = "0";
   }
+  showDieControls();
+  document.getElementById("gameButton").disabled = true;			// disable game button
+  document.getElementById("runButton").disabled = false;			// enable run button
 }
 
 function startRun() {
@@ -104,9 +111,14 @@ function endRun() {
       }
     }
   }
-  document.getElementById("rollButton").disabled = true;
-  document.getElementById("runButton").disabled = false;
   isRunning = false;
+  document.getElementById("rollButton").disabled = true;
+  // if game over
+  if (intRunNumber == intMaxRuns) {
+    document.getElementById("gameButton").disabled = false;
+  } else {
+    document.getElementById("runButton").disabled = false;
+  }
 }
 
 function rollDie() {
@@ -254,7 +266,7 @@ Die is 1 to ...:<br>
 </table>
 	
 <div style="margin-top:20px;">
-<button id="runButton" onClick="startRun()">New Run</button>
+<button id="runButton" disabled onClick="startRun()">New Run</button>
 </div>
 
 <div style="margin-top:40px;">
