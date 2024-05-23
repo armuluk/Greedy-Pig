@@ -70,6 +70,8 @@ function startGame() {
   for (let intFace = 1; intFace <= 6; intFace++) {
     document.getElementById("face" + intFace).innerHTML = "0";
   }
+  document.getElementById("gameButton").disabled = true;			// disable game button
+  document.getElementById("runButton").disabled = false;			// enable run button
 }
 
 function startRun() {
@@ -254,7 +256,7 @@ Die is 1 to ...:<br>
 </table>
 	
 <div style="margin-top:20px;">
-<button id="runButton" onClick="startRun()">New Run</button>
+<button id="runButton" disabled onClick="startRun()">New Run</button>
 </div>
 
 <div style="margin-top:40px;">
