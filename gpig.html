@@ -155,6 +155,7 @@ function unstick(intPlayerID) {									   	// set status to running
   document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgreen";
   var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
   document.getElementById(strRunCellID).innerHTML = '';
+	calcPlayerTotal(intPlayerID);
 }
 
 function stickify(intPlayerID) {
@@ -176,20 +177,24 @@ function stick(intPlayerID) {
   document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgrey";
   var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
   document.getElementById(strRunCellID).innerHTML = intRunningTotal;
-  // calc the player's new total
-  var intPlayerTotal = 0;
-  for (var i = 1; i <= intRunNumber; i++) {
-    var strRunCellID = "player" + intPlayerID + "run" + i;
-    var intPlayerRunScore = parseInt(document.getElementById(strRunCellID).innerHTML);
-    intPlayerTotal += intPlayerRunScore
-  }
-  var strTotalCellID = "player" + intPlayerID + "total";
-  document.getElementById(strTotalCellID).innerHTML = intPlayerTotal;
+	calcPlayerTotal(intPlayerID);
   if (isEveryoneStuck()) {
 		endRun();
 	}
 }
 
+function calcPlayerTotal(intPlayerID) {
+	// calc the player's new total
+  let intPlayerTotal = 0;
+  for (let i = 1; i <= intRunNumber; i++) {
+    let strRunCellID = "player" + intPlayerID + "run" + i;
+    let intPlayerRunScore = parseInt(document.getElementById(strRunCellID).innerHTML);
+    if (Number.isInteger(intPlayerRunScore)) intPlayerTotal += intPlayerRunScore
+  }
+  let strTotalCellID = "player" + intPlayerID + "total";
+  document.getElementById(strTotalCellID).innerHTML = intPlayerTotal;
+}
+	
 function isEveryoneStuck() {
   var blnEveryoneStuck = true;                      // assume true then check if anyone isn't
   for (var i = 1; i <= intNumberOfPlayers; i++) {
