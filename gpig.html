@@ -23,6 +23,8 @@ var intRunningTotal = 0;              // the current total of the current run
 var isRunning = false;					// flag true when a run is ongoing
 var isRolling = false;					// flag true when a die is rolling
 
+var flgAlltimeUpdated;          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
+
 var astrField = [
 	"6ieme",
 	"Eleonor",
@@ -54,6 +56,8 @@ function renumberDie(intHigh) {
 }
 
 function startGame() {
+  displayAlltime();
+  flgAlltimeUpdated = false; console.log("flgAlltimeUpdated = "+flgAlltimeUpdated);         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   // set up player names
   for (let i = 1; i < astrField.length; i++) {
     document.getElementById("player" + i).innerHTML = astrField[i];
@@ -132,6 +136,9 @@ function endRun() {
   // if game over
   if (intRunNumber == intMaxRuns) {
     document.getElementById("gameButton").disabled = false;
+    console.log("pre-update flgAlltimeUpdated = "+flgAlltimeUpdated);         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
+    if (!flgAlltimeUpdated) updateAlltime();
+    flgAlltimeUpdated = true; console.log("post-update flgAlltimeUpdated = "+flgAlltimeUpdated);         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   } else {
     document.getElementById("runButton").disabled = false;
   }
@@ -232,6 +239,30 @@ function isEveryoneStuck() {
   }
   return blnEveryoneStuck;
 }
+	
+function displayAlltime() {
+  let intPlayerID = 1;
+  let strAlltimeID = "player" + intPlayerID + "alltime";
+  let intPlayerAlltime = parseInt(localStorage.getItem(strAlltimeID));
+  if (isNaN(intPlayerAlltime)) intPlayerAlltime = 0;
+  document.getElementById(strAlltimeID).innerHTML = intPlayerAlltime;
+}
+
+function updateAlltime() {console.log("updateAlltime");
+  let intPlayerID = 1;
+  let strTotalCellID = "player" + intPlayerID + "total";
+  let intPlayerTotal = parseInt(document.getElementById(strTotalCellID).innerHTML);console.log("intPlayerTotal "+intPlayerTotal);
+  let strAlltimeID = "player" + intPlayerID + "alltime";
+  let intPlayerAlltime = parseInt(localStorage.getItem(strAlltimeID));console.log("intPlayerAlltime stored "+intPlayerAlltime);
+  if (isNaN(intPlayerAlltime)) intPlayerAlltime = 0;console.log("intPlayerAlltime used "+intPlayerAlltime);
+  if (Number.isInteger(intPlayerTotal) && Number.isInteger(intPlayerAlltime)) 
+  {console.log("valid input");
+    intPlayerAlltime += intPlayerTotal;console.log("intPlayerAlltime "+intPlayerAlltime);
+    localStorage.setItem(strAlltimeID, intPlayerAlltime);console.log("intPlayerAlltime stored "+localStorage.getItem(strAlltimeID));
+  }
+  displayAlltime();
+}
+
 </script>
 
 <!-- use grid-template -->
@@ -307,6 +338,8 @@ Die is 1 to ...:<br>
 <td id="player1run9" width="30px" style="text-align: center;"></td>
 <td id="player1run10" width="30px" style="text-align: center;"></td>
 <td id="player1total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player1alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player2" style="background-color: lightgreen;" onClick="flipstick(2)">Player 2</td>
