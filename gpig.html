@@ -19,9 +19,9 @@ var intTurnDeceleration;        // the increase in wait time between each turn
 var intNumberOfPlayers = 13;     // number of current players in the game
 var intMaxRuns = 10;
 var intRunNumber = 0;           // start with no current run
-var intRunningTotal = 0;              // the current total of the current run
-var isRunning = false;					// flag true when a run is ongoing
-var isRolling = false;					// flag true when a die is rolling
+var intRunningTotal = 0;        // the current total of the current run
+var isRunning = false;		// flag true when a run is ongoing
+var isRolling = false;		// flag true when a die is rolling
 
 var flgAlltimeUpdated;          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
 
@@ -57,7 +57,7 @@ function renumberDie(intHigh) {
 
 function startGame() {
   displayAlltime();
-  flgAlltimeUpdated = false; console.log("flgAlltimeUpdated = "+flgAlltimeUpdated);         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
+  flgAlltimeUpdated = false;         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   // set up player names
   for (let i = 1; i < astrField.length; i++) {
     document.getElementById("player" + i).innerHTML = astrField[i];
@@ -136,9 +136,8 @@ function endRun() {
   // if game over
   if (intRunNumber == intMaxRuns) {
     document.getElementById("gameButton").disabled = false;
-    console.log("pre-update flgAlltimeUpdated = "+flgAlltimeUpdated);         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
     if (!flgAlltimeUpdated) updateAlltime();
-    flgAlltimeUpdated = true; console.log("post-update flgAlltimeUpdated = "+flgAlltimeUpdated);         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
+    flgAlltimeUpdated = true;        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   } else {
     document.getElementById("runButton").disabled = false;
   }
@@ -205,7 +204,7 @@ function stickify(intPlayerID) {
 function stickStickies() {
   for (var i = 1; i <= intNumberOfPlayers; i++) {
     if (document.getElementById("player" + i).style.backgroundColor == "burlywood") 
-			document.getElementById("player" + i).style.backgroundColor = "lightgrey";							// stick any sticky players
+    document.getElementById("player" + i).style.backgroundColor = "lightgrey";					// stick any sticky players
   }
 }
 
@@ -214,14 +213,14 @@ function stick(intPlayerID) {
   document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgrey";
   var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
   document.getElementById(strRunCellID).innerHTML = intRunningTotal;
-	calcPlayerTotal(intPlayerID);
+  calcPlayerTotal(intPlayerID);
   if (isEveryoneStuck()) {
-		endRun();
-	}
+    endRun();
+  }
 }
 
 function calcPlayerTotal(intPlayerID) {
-	// calc the player's new total
+  // calc the player's new total
   let intPlayerTotal = 0;
   for (let i = 1; i <= intRunNumber; i++) {
     let strRunCellID = "player" + intPlayerID + "run" + i;
@@ -241,26 +240,34 @@ function isEveryoneStuck() {
 }
 	
 function displayAlltime() {
-  let intPlayerID = 1;
-  let strAlltimeID = "player" + intPlayerID + "alltime";
-  let intPlayerAlltime = parseInt(localStorage.getItem(strAlltimeID));
-  if (isNaN(intPlayerAlltime)) intPlayerAlltime = 0;
-  document.getElementById(strAlltimeID).innerHTML = intPlayerAlltime;
+  for (let intPlayerID = 1; intPlayerID <= intNumberOfPlayers; intPlayerID++) {
+    let strAlltimeID = "player" + intPlayerID + "alltime";
+    let intPlayerAlltime = parseInt(localStorage.getItem(strAlltimeID));
+    if (isNaN(intPlayerAlltime)) intPlayerAlltime = 0;
+    document.getElementById(strAlltimeID).innerHTML = intPlayerAlltime;
+  }
 }
 
-function updateAlltime() {console.log("updateAlltime");
-  let intPlayerID = 1;
-  let strTotalCellID = "player" + intPlayerID + "total";
-  let intPlayerTotal = parseInt(document.getElementById(strTotalCellID).innerHTML);console.log("intPlayerTotal "+intPlayerTotal);
-  let strAlltimeID = "player" + intPlayerID + "alltime";
-  let intPlayerAlltime = parseInt(localStorage.getItem(strAlltimeID));console.log("intPlayerAlltime stored "+intPlayerAlltime);
-  if (isNaN(intPlayerAlltime)) intPlayerAlltime = 0;console.log("intPlayerAlltime used "+intPlayerAlltime);
-  if (Number.isInteger(intPlayerTotal) && Number.isInteger(intPlayerAlltime)) 
-  {console.log("valid input");
-    intPlayerAlltime += intPlayerTotal;console.log("intPlayerAlltime "+intPlayerAlltime);
-    localStorage.setItem(strAlltimeID, intPlayerAlltime);console.log("intPlayerAlltime stored "+localStorage.getItem(strAlltimeID));
+function updateAlltime() {
+  for (let intPlayerID = 1; intPlayerID <= intNumberOfPlayers; intPlayerID++) {
+    let strTotalCellID = "player" + intPlayerID + "total";
+    let intPlayerTotal = parseInt(document.getElementById(strTotalCellID).innerHTML);
+    let strAlltimeID = "player" + intPlayerID + "alltime";
+    let intPlayerAlltime = parseInt(localStorage.getItem(strAlltimeID));
+    if (isNaN(intPlayerAlltime)) intPlayerAlltime = 0;
+    if (Number.isInteger(intPlayerTotal) && Number.isInteger(intPlayerAlltime)) {
+      intPlayerAlltime += intPlayerTotal;
+      localStorage.setItem(strAlltimeID, intPlayerAlltime);
+    }
   }
   displayAlltime();
+}
+
+function clearAlltime() {
+  for (let intPlayerID = 1; intPlayerID <= intNumberOfPlayers; intPlayerID++) {
+    let strAlltimeID = "player" + intPlayerID + "alltime";
+    localStorage.setItem(strAlltimeID, 0);
+  }
 }
 
 </script>
@@ -354,6 +361,8 @@ Die is 1 to ...:<br>
 <td id="player2run9" width="30px" style="text-align: center;"></td>
 <td id="player2run10" width="30px" style="text-align: center;"></td>
 <td id="player2total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player2alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player3" style="background-color: lightgreen;" onClick="flipstick(3)">Player 3</td>
@@ -368,6 +377,8 @@ Die is 1 to ...:<br>
 <td id="player3run9" width="30px" style="text-align: center;"></td>
 <td id="player3run10" width="30px" style="text-align: center;"></td>
 <td id="player3total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player3alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player4" style="background-color: lightgreen;" onClick="flipstick(4)">Player 4</td>
@@ -382,6 +393,8 @@ Die is 1 to ...:<br>
 <td id="player4run9" width="30px" style="text-align: center;"></td>
 <td id="player4run10" width="30px" style="text-align: center;"></td>
 <td id="player4total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player4alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player5" style="background-color: lightgreen;" onClick="flipstick(5)">Player 5</td>
@@ -396,6 +409,8 @@ Die is 1 to ...:<br>
 <td id="player5run9" width="30px" style="text-align: center;"></td>
 <td id="player5run10" width="30px" style="text-align: center;"></td>
 <td id="player5total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player5alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player6" style="background-color: lightgreen;" onClick="flipstick(6)">Player 6</td>
@@ -410,6 +425,8 @@ Die is 1 to ...:<br>
 <td id="player6run9" width="30px" style="text-align: center;"></td>
 <td id="player6run10" width="30px" style="text-align: center;"></td>
 <td id="player6total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player6alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player7" style="background-color: lightgreen;" onClick="flipstick(7)">Player 7</td>
@@ -424,6 +441,8 @@ Die is 1 to ...:<br>
 <td id="player7run9" width="30px" style="text-align: center;"></td>
 <td id="player7run10" width="30px" style="text-align: center;"></td>
 <td id="player7total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player7alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player8" style="background-color: lightgreen;" onClick="flipstick(8)">Player 8</td>
@@ -438,6 +457,8 @@ Die is 1 to ...:<br>
 <td id="player8run9" width="30px" style="text-align: center;"></td>
 <td id="player8run10" width="30px" style="text-align: center;"></td>
 <td id="player8total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player8alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player9" style="background-color: lightgreen;" onClick="flipstick(9)">Player 9</td>
@@ -452,6 +473,8 @@ Die is 1 to ...:<br>
 <td id="player9run9" width="30px" style="text-align: center;"></td>
 <td id="player9run10" width="30px" style="text-align: center;"></td>
 <td id="player9total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player9alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player10" style="background-color: lightgreen;" onClick="flipstick(10)">Player 10</td>
@@ -466,6 +489,8 @@ Die is 1 to ...:<br>
 <td id="player10run9" width="30px" style="text-align: center;"></td>
 <td id="player10run10" width="30px" style="text-align: center;"></td>
 <td id="player10total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player10alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player11" style="background-color: lightgreen;" onClick="flipstick(11)">Player 11</td>
@@ -480,6 +505,8 @@ Die is 1 to ...:<br>
 <td id="player11run9" width="30px" style="text-align: center;"></td>
 <td id="player11run10" width="30px" style="text-align: center;"></td>
 <td id="player11total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player11alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player12" style="background-color: lightgreen;" onClick="flipstick(12)">Player 12</td>
@@ -494,6 +521,8 @@ Die is 1 to ...:<br>
 <td id="player12run9" width="30px" style="text-align: center;"></td>
 <td id="player12run10" width="30px" style="text-align: center;"></td>
 <td id="player12total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player12alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
 <td id="player13" style="background-color: lightgreen;" onClick="flipstick(13)">Player 13</td>
@@ -508,6 +537,8 @@ Die is 1 to ...:<br>
 <td id="player13run9" width="30px" style="text-align: center;"></td>
 <td id="player13run10" width="30px" style="text-align: center;"></td>
 <td id="player13total" width="30px" style="background-color: lightblue; text-align: center;">0</td>
+<td width="60px" style="text-align: center;border-style: none;"></td>
+<td id="player13alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 </table>
 </div>
