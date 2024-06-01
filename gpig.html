@@ -183,7 +183,14 @@ function turnDie() {
 }
 
 function playerClicked(intPlayerID) {
-  flipstick(intPlayerID);
+  if (isPregame) {
+    fliphide(intPlayerID);
+  } else {
+    flipstick(intPlayerID);
+  }
+}
+
+function fliphide(intPlayerID) {
 }
 
 function flipstick(intPlayerID) {
