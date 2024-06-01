@@ -182,9 +182,13 @@ function turnDie() {
   }
 }
 
+function playerClicked(intPlayerID) {
+  flipstick(intPlayerID);
+}
+
 function flipstick(intPlayerID) {
   if (document.getElementById("player" + intPlayerID).style.backgroundColor == "burlywood") {       // if stuck
-    unstick (intPlayerID);									    //  then unstick
+    unstick(intPlayerID);									    //  then unstick
   } else if (isRunning && !isRolling && (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgreen")) {    	    // if game running, no die is rolling and player not stuck
     stickify(intPlayerID);									    //   make sticky
   }
@@ -336,7 +340,7 @@ Die is 1 to ...:<br>
 
 <table border  style="font-size:24px;">
 <tr>
-<td id="player1" style="background-color: lightgreen;" onClick="flipstick(1)">Player 1</td>
+<td id="player1" style="background-color: lightgreen;" onClick="playerClicked(1)">Player 1</td>
 <td id="player1run1" width="30px" style="text-align: center;"></td>
 <td id="player1run2" width="30px" style="text-align: center;"></td>
 <td id="player1run3" width="30px" style="text-align: center;"></td>
@@ -352,7 +356,7 @@ Die is 1 to ...:<br>
 <td id="player1alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player2" style="background-color: lightgreen;" onClick="flipstick(2)">Player 2</td>
+<td id="player2" style="background-color: lightgreen;" onClick="playerClicked(2)">Player 2</td>
 <td id="player2run1" width="30px" style="text-align: center;"></td>
 <td id="player2run2" width="30px" style="text-align: center;"></td>
 <td id="player2run3" width="30px" style="text-align: center;"></td>
@@ -368,7 +372,7 @@ Die is 1 to ...:<br>
 <td id="player2alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player3" style="background-color: lightgreen;" onClick="flipstick(3)">Player 3</td>
+<td id="player3" style="background-color: lightgreen;" onClick="playerClicked(3)">Player 3</td>
 <td id="player3run1" width="30px" style="text-align: center;"></td>
 <td id="player3run2" width="30px" style="text-align: center;"></td>
 <td id="player3run3" width="30px" style="text-align: center;"></td>
@@ -384,7 +388,7 @@ Die is 1 to ...:<br>
 <td id="player3alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player4" style="background-color: lightgreen;" onClick="flipstick(4)">Player 4</td>
+<td id="player4" style="background-color: lightgreen;" onClick="playerClicked(4)">Player 4</td>
 <td id="player4run1" width="30px" style="text-align: center;"></td>
 <td id="player4run2" width="30px" style="text-align: center;"></td>
 <td id="player4run3" width="30px" style="text-align: center;"></td>
@@ -400,7 +404,7 @@ Die is 1 to ...:<br>
 <td id="player4alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player5" style="background-color: lightgreen;" onClick="flipstick(5)">Player 5</td>
+<td id="player5" style="background-color: lightgreen;" onClick="playerClicked(5)">Player 5</td>
 <td id="player5run1" width="30px" style="text-align: center;"></td>
 <td id="player5run2" width="30px" style="text-align: center;"></td>
 <td id="player5run3" width="30px" style="text-align: center;"></td>
@@ -416,7 +420,7 @@ Die is 1 to ...:<br>
 <td id="player5alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player6" style="background-color: lightgreen;" onClick="flipstick(6)">Player 6</td>
+<td id="player6" style="background-color: lightgreen;" onClick="playerClicked(6)">Player 6</td>
 <td id="player6run1" width="30px" style="text-align: center;"></td>
 <td id="player6run2" width="30px" style="text-align: center;"></td>
 <td id="player6run3" width="30px" style="text-align: center;"></td>
@@ -432,7 +436,7 @@ Die is 1 to ...:<br>
 <td id="player6alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player7" style="background-color: lightgreen;" onClick="flipstick(7)">Player 7</td>
+<td id="player7" style="background-color: lightgreen;" onClick="playerClicked(7)">Player 7</td>
 <td id="player7run1" width="30px" style="text-align: center;"></td>
 <td id="player7run2" width="30px" style="text-align: center;"></td>
 <td id="player7run3" width="30px" style="text-align: center;"></td>
@@ -448,7 +452,7 @@ Die is 1 to ...:<br>
 <td id="player7alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player8" style="background-color: lightgreen;" onClick="flipstick(8)">Player 8</td>
+<td id="player8" style="background-color: lightgreen;" onClick="playerClicked(8)">Player 8</td>
 <td id="player8run1" width="30px" style="text-align: center;"></td>
 <td id="player8run2" width="30px" style="text-align: center;"></td>
 <td id="player8run3" width="30px" style="text-align: center;"></td>
@@ -464,7 +468,7 @@ Die is 1 to ...:<br>
 <td id="player8alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player9" style="background-color: lightgreen;" onClick="flipstick(9)">Player 9</td>
+<td id="player9" style="background-color: lightgreen;" onClick="playerClicked(9)">Player 9</td>
 <td id="player9run1" width="30px" style="text-align: center;"></td>
 <td id="player9run2" width="30px" style="text-align: center;"></td>
 <td id="player9run3" width="30px" style="text-align: center;"></td>
@@ -480,7 +484,7 @@ Die is 1 to ...:<br>
 <td id="player9alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player10" style="background-color: lightgreen;" onClick="flipstick(10)">Player 10</td>
+<td id="player10" style="background-color: lightgreen;" onClick="playerClicked(10)">Player 10</td>
 <td id="player10run1" width="30px" style="text-align: center;"></td>
 <td id="player10run2" width="30px" style="text-align: center;"></td>
 <td id="player10run3" width="30px" style="text-align: center;"></td>
@@ -496,7 +500,7 @@ Die is 1 to ...:<br>
 <td id="player10alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player11" style="background-color: lightgreen;" onClick="flipstick(11)">Player 11</td>
+<td id="player11" style="background-color: lightgreen;" onClick="playerClicked(11)">Player 11</td>
 <td id="player11run1" width="30px" style="text-align: center;"></td>
 <td id="player11run2" width="30px" style="text-align: center;"></td>
 <td id="player11run3" width="30px" style="text-align: center;"></td>
@@ -512,7 +516,7 @@ Die is 1 to ...:<br>
 <td id="player11alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player12" style="background-color: lightgreen;" onClick="flipstick(12)">Player 12</td>
+<td id="player12" style="background-color: lightgreen;" onClick="playerClicked(12)">Player 12</td>
 <td id="player12run1" width="30px" style="text-align: center;"></td>
 <td id="player12run2" width="30px" style="text-align: center;"></td>
 <td id="player12run3" width="30px" style="text-align: center;"></td>
@@ -528,7 +532,7 @@ Die is 1 to ...:<br>
 <td id="player12alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
 <tr>
-<td id="player13" style="background-color: lightgreen;" onClick="flipstick(13)">Player 13</td>
+<td id="player13" style="background-color: lightgreen;" onClick="playerClicked(13)">Player 13</td>
 <td id="player13run1" width="30px" style="text-align: center;"></td>
 <td id="player13run2" width="30px" style="text-align: center;"></td>
 <td id="player13run3" width="30px" style="text-align: center;"></td>
