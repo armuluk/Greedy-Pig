@@ -22,6 +22,7 @@ var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;        // the current total of the current run
 var isRunning = false;		// flag true when a run is ongoing
 var isRolling = false;		// flag true when a die is rolling
+var isPregame = false;		// flag true when a new game has been started but a run has not yet been started
 
 var flgAlltimeUpdated;          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
 
@@ -43,19 +44,20 @@ var astrField = [
 ];
 
 function hideDieControls() {
-   document.getElementById("eltDieControls").style.display = 'none';
+  document.getElementById("eltDieControls").style.display = 'none';
 }
   
 function showDieControls() {
-   document.getElementById("eltDieControls").style.display = 'block';
+  document.getElementById("eltDieControls").style.display = 'block';
 }
   
 function renumberDie(intHigh) {
-   strDieFaces = "123456789".substring(0, intHigh);		// the faces to be used
+  strDieFaces = "123456789".substring(0, intHigh);		// the faces to be used
   intChooseFrom = intHigh - 1;					// don't allow the most recently used face to be used again immediately
 }
 
 function startGame() {
+	isPregame = true;                  // game board edits now live
   displayAlltime();
   flgAlltimeUpdated = false;         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   // set up player names
@@ -86,6 +88,7 @@ function startGame() {
 }
 
 function startRun() {
+  isPregame = false;                              // no gameboard edits allowed now
   hideDieControls();                                                                                                   //
   intRunNumber++;                                 // next run number
   intRunningTotal = 0;                            // restart the totaliser
