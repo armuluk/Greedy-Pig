@@ -6,41 +6,41 @@ You should have received a copy of the GNU Affero General Public License along w
 
 <script>
 
-var strDieFaces;            // the faces to be used
-var intChooseFrom;          // how many of the face list to choose from (from the list start, regarded here as item 1)
-renumberDie(6);			// default to 6-sided die
+var strDieFaces;                // the faces to be used
+var intChooseFrom;              // how many of the face list to choose from (from the list start, regarded here as item 1)
+renumberDie(6);	                // default to 6-sided die
 var intRollLength = 12;         // number of turns of the die before it stops
-var intLastTurnSpeed = 500;       // the number of milliseconds the final turn of the die takes
+var intLastTurnSpeed = 500;     // the number of milliseconds the final turn of the die takes
 
 var intTurnsRemaining;          // keeps count of the turn left to do in a roll
 var intNextTurnSpeed;           // how long to wait before turning the die (so the reciprocal of the natural turns/second speed)
 var intTurnDeceleration;        // the increase in wait time between each turn
 
-var intNumberOfPlayers = 13;     // number of current players in the game
+var intNumberOfPlayers = 13;    // number of current players in the game
 var intMaxRuns = 10;
 var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;        // the current total of the current run
-var isRunning = false;		// flag true when a run is ongoing
-var isRolling = false;		// flag true when a die is rolling
-var isPregame = false;		// flag true when a new game has been started but a run has not yet been started
+var isRunning = false;// flag true when a run is ongoing
+var isRolling = false;// flag true when a die is rolling
+var isPregame = false;// flag true when a new game has been started but a run has not yet been started
 
 var flgAlltimeUpdated;          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
 
 var astrField = [
-	"6ieme",
-	"Eleonor",
-	"Elissa",
-	"Hafsa",
-	"Issa",
-	"Jad",
-	"Jenna",
-	"Jibril",
-	"Julian",
-	"Leo",
-	"Lisa",
-	"Maryam",
-	"Raena",
-	"Rebecca"
+  "6ieme",
+  "Eleonor",
+  "Elissa",
+  "Hafsa",
+  "Issa",
+  "Jad",
+  "Jenna",
+  "Jibril",
+  "Julian",
+  "Leo",
+  "Lisa",
+  "Maryam",
+  "Raena",
+  "Rebecca"
 ];
 
 function hideDieControls() {
@@ -52,12 +52,12 @@ function showDieControls() {
 }
   
 function renumberDie(intHigh) {
-  strDieFaces = "123456789".substring(0, intHigh);		// the faces to be used
-  intChooseFrom = intHigh - 1;					// don't allow the most recently used face to be used again immediately
+  strDieFaces = "123456789".substring(0, intHigh);          // the faces to be used
+  intChooseFrom = intHigh - 1;                              // don't allow the most recently used face to be used again immediately
 }
 
 function startGame() {
-	isPregame = true;                  // game board edits now live
+  isPregame = true;                      // game board edits now live
   displayAlltime();
   flgAlltimeUpdated = false;         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   // set up player names
@@ -83,17 +83,17 @@ function startGame() {
     document.getElementById("face" + intFace).innerHTML = "0";
   }
   showDieControls();
-  document.getElementById("gameButton").disabled = true;			// disable game button
-  document.getElementById("runButton").disabled = false;			// enable run button
+  document.getElementById("gameButton").disabled = true;// disable game button
+  document.getElementById("runButton").disabled = false;// enable run button
 }
 
 function startRun() {
-  isPregame = false;                              // no gameboard edits allowed now
+  isPregame = false;                                                      // no gameboard edits allowed now
   hideDieControls();                                                                                                   //
-  intRunNumber++;                                 // next run number
-  intRunningTotal = 0;                            // restart the totaliser
+  intRunNumber++;                                                         // next run number
+  intRunningTotal = 0;                                                    // restart the totaliser
   document.getElementById("runningTotal").innerHTML = intRunningTotal;    // and show it
-  for (var i = 1; i <= intNumberOfPlayers; i++) {                   // reenable the players
+  for (var i = 1; i <= intNumberOfPlayers; i++) {                         // reenable the players
     document.getElementById("player" + i).style.backgroundColor = "lightgreen";
   }
   document.getElementById("runButton").disabled = true;
@@ -111,7 +111,7 @@ function endRun() {
   for (let i = 1; i <= intNumberOfPlayers; i++) {
     stick(i);
     // do high score
-    document.getElementById("player" + i + "total").style.backgroundColor = "lightblue";      // remove any high score highlight
+    document.getElementById("player" + i + "total").style.backgroundColor = "lightblue";                  // remove any high score highlight
     if (parseInt(document.getElementById("player" + i + "total").innerHTML) > intHighScore) {
       intHighScore = parseInt(document.getElementById("player" + i + "total").innerHTML);
     }
@@ -140,7 +140,7 @@ function endRun() {
   if (intRunNumber == intMaxRuns) {
     document.getElementById("gameButton").disabled = false;
     if (!flgAlltimeUpdated) updateAlltime();
-    flgAlltimeUpdated = true;        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
+    flgAlltimeUpdated = true;        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   } else {
     document.getElementById("runButton").disabled = false;
   }
@@ -148,16 +148,16 @@ function endRun() {
 
 function rollDie() {
   isRolling = true;
-  stickStickies();												// can't unstick now
+  stickStickies();// can't unstick now
   document.getElementById("rollButton").disabled = true;
-  intTurnsRemaining = intRollLength + (Math.random() < 0.5);               // add 'wobble' to keep 2-sided rolls random
+  intTurnsRemaining = intRollLength + (Math.random() < 0.5);                   // add 'wobble' to keep 2-sided rolls random
   intNextTurnSpeed = 0;
   intTurnDeceleration = Math.round(intLastTurnSpeed / intRollLength);
   turnDie();
 }
 
 function turnDie() {
-  var intFaceIndex = Math.floor(intChooseFrom * Math.random());      // arrays/strings are zero indexed
+  var intFaceIndex = Math.floor(intChooseFrom * Math.random());                // arrays/strings are zero indexed
   var strFace = strDieFaces[intFaceIndex];
   strDieFaces = strDieFaces.substring(0, intFaceIndex) + strDieFaces.substring(intFaceIndex + 1) + strDieFaces.charAt(intFaceIndex);    // send to the end
   document.getElementById("die").innerHTML = strFace;
@@ -165,12 +165,12 @@ function turnDie() {
   intNextTurnSpeed += intTurnDeceleration;        // slow down the die as it turns
   if (intTurnsRemaining) {                        // set up the next turn if required
     setTimeout(turnDie, intNextTurnSpeed);
-  } else {						// that was the last turn
+  } else {// that was the last turn
     intRollValue = parseInt(strFace);
      // update the roll record <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 //    let eltRollAccumX = document.getElementById("face" + intRollValue);
 //    ++eltRollAccumX.innerHTML;
-      if (intRollValue > 1) {
+    if (intRollValue > 1) {
       intRunningTotal += Math.floor(strFace);
       document.getElementById("rollButton").disabled = false;
     } else {
@@ -178,7 +178,7 @@ function turnDie() {
       endRun();
     }
     document.getElementById("runningTotal").innerHTML = intRunningTotal;
-		isRolling = false;
+    isRolling = false;
   }
 }
 
@@ -194,31 +194,32 @@ function fliphide(intPlayerID) {
 }
 
 function flipstick(intPlayerID) {
-  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "burlywood") {       // if stuck
-    unstick(intPlayerID);									    //  then unstick
+  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "burlywood") {                                               // if stuck
+    unstick(intPlayerID);   //  then unstick
   } else if (isRunning && !isRolling && (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgreen")) {    	    // if game running, no die is rolling and player not stuck
-    stickify(intPlayerID);									    //   make sticky
+    stickify(intPlayerID);    //   make sticky
   }
 }
 
-function unstick(intPlayerID) {									   	// set status to running
+function unstick(intPlayerID) {
+  // set player status to running
   document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgreen";
   var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
   document.getElementById(strRunCellID).innerHTML = '';
-	calcPlayerTotal(intPlayerID);
+  calcPlayerTotal(intPlayerID);
 }
 
 function stickify(intPlayerID) {
-  stick(intPlayerID);																																											// stick the player
-	if (isRunning) {
-  	document.getElementById("player" + intPlayerID).style.backgroundColor = "burlywood";									// if run still running flag player is only sticky not stuck
-	}
+  stick(intPlayerID);                        // stick the player
+  if (isRunning) {
+    document.getElementById("player" + intPlayerID).style.backgroundColor = "burlywood";                    // if run still running flag player is only sticky not stuck
+  }
 }
 
 function stickStickies() {
   for (var i = 1; i <= intNumberOfPlayers; i++) {
     if (document.getElementById("player" + i).style.backgroundColor == "burlywood") 
-    document.getElementById("player" + i).style.backgroundColor = "lightgrey";					// stick any sticky players
+    document.getElementById("player" + i).style.backgroundColor = "lightgrey";                           // stick any sticky players
   }
 }
 
