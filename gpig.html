@@ -6,61 +6,64 @@ You should have received a copy of the GNU Affero General Public License along w
 
 <script>
 
-var strDieFaces;            // the faces to be used
-var intChooseFrom;          // how many of the face list to choose from (from the list start, regarded here as item 1)
-renumberDie(6);			// default to 6-sided die
+var strDieFaces;                // the faces to be used
+var intChooseFrom;              // how many of the face list to choose from (from the list start, regarded here as item 1)
+renumberDie(6);	                // default to 6-sided die
 var intRollLength = 12;         // number of turns of the die before it stops
-var intLastTurnSpeed = 500;       // the number of milliseconds the final turn of the die takes
+var intLastTurnSpeed = 500;     // the number of milliseconds the final turn of the die takes
 
 var intTurnsRemaining;          // keeps count of the turn left to do in a roll
 var intNextTurnSpeed;           // how long to wait before turning the die (so the reciprocal of the natural turns/second speed)
 var intTurnDeceleration;        // the increase in wait time between each turn
 
-var intNumberOfPlayers = 13;     // number of current players in the game
+var intNumberOfPlayers = 13;    // number of current players in the game
 var intMaxRuns = 10;
 var intRunNumber = 0;           // start with no current run
 var intRunningTotal = 0;        // the current total of the current run
-var isRunning = false;		// flag true when a run is ongoing
-var isRolling = false;		// flag true when a die is rolling
+var isRunning = false;// flag true when a run is ongoing
+var isRolling = false;// flag true when a die is rolling
+var isPregame = false;// flag true when a new game has been started but a run has not yet been started
 
 var flgAlltimeUpdated;          //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
 
 var astrField = [
-	"6ieme",
-	"Eleonor",
-	"Elissa",
-	"Hafsa",
-	"Issa",
-	"Jad",
-	"Jenna",
-	"Jibril",
-	"Julian",
-	"Leo",
-	"Lisa",
-	"Maryam",
-	"Raena",
-	"Rebecca"
+  "6ieme",
+  "Eleonor",
+  "Elissa",
+  "Hafsa",
+  "Issa",
+  "Jad",
+  "Jenna",
+  "Jibril",
+  "Julian",
+  "Leo",
+  "Lisa",
+  "Maryam",
+  "Raena",
+  "Rebecca"
 ];
 
 function hideDieControls() {
-   document.getElementById("eltDieControls").style.display = 'none';
+  document.getElementById("eltDieControls").style.display = 'none';
 }
   
 function showDieControls() {
-   document.getElementById("eltDieControls").style.display = 'block';
+  document.getElementById("eltDieControls").style.display = 'block';
 }
   
 function renumberDie(intHigh) {
-   strDieFaces = "123456789".substring(0, intHigh);		// the faces to be used
-  intChooseFrom = intHigh - 1;					// don't allow the most recently used face to be used again immediately
+  strDieFaces = "123456789".substring(0, intHigh);          // the faces to be used
+  intChooseFrom = intHigh - 1;                              // don't allow the most recently used face to be used again immediately
 }
 
 function startGame() {
+  isPregame = true;                      // game board edits now live
   displayAlltime();
   flgAlltimeUpdated = false;         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
-  // set up player names
-  for (let i = 1; i < astrField.length; i++) {
-    document.getElementById("player" + i).innerHTML = astrField[i];
+  // set up player names & show all rows
+  for (let intPlayerID = 1; intPlayerID < astrField.length; intPlayerID++) {
+    document.getElementById("player" + intPlayerID).innerHTML = astrField[intPlayerID];
+    document.getElementById("player" + intPlayerID + "row").style.display = "table-row";
   }
   // clear previous game - player run score record highlights
   for (let intPlayerID = 1; intPlayerID < astrField.length; intPlayerID++) {
@@ -81,16 +84,26 @@ function startGame() {
     document.getElementById("face" + intFace).innerHTML = "0";
   }
   showDieControls();
-  document.getElementById("gameButton").disabled = true;			// disable game button
-  document.getElementById("runButton").disabled = false;			// enable run button
+  document.getElementById("gameButton").disabled = true;// disable game button
+  document.getElementById("runButton").disabled = false;// enable run button
 }
 
 function startRun() {
+  // before the first run, hide any non-players
+  if (isPregame) {
+    for (let intPlayerID = 1; intPlayerID < astrField.length; intPlayerID++) {
+      if (document.getElementById("player" + intPlayerID).style.textDecoration == 'line-through') {
+        document.getElementById("player" + intPlayerID).style.textDecoration = 'none';                    // turn off the flag
+        eltPlayerRow = document.getElementById("player" + intPlayerID + "row").style.display = "none";    // and hide the player
+      }
+    }
+    isPregame = false;                                                      // no gameboard edits allowed during game
+  }
   hideDieControls();                                                                                                   //
-  intRunNumber++;                                 // next run number
-  intRunningTotal = 0;                            // restart the totaliser
+  intRunNumber++;                                                         // next run number
+  intRunningTotal = 0;                                                    // restart the totaliser
   document.getElementById("runningTotal").innerHTML = intRunningTotal;    // and show it
-  for (var i = 1; i <= intNumberOfPlayers; i++) {                   // reenable the players
+  for (var i = 1; i <= intNumberOfPlayers; i++) {                         // reenable the players
     document.getElementById("player" + i).style.backgroundColor = "lightgreen";
   }
   document.getElementById("runButton").disabled = true;
@@ -108,7 +121,7 @@ function endRun() {
   for (let i = 1; i <= intNumberOfPlayers; i++) {
     stick(i);
     // do high score
-    document.getElementById("player" + i + "total").style.backgroundColor = "lightblue";      // remove any high score highlight
+    document.getElementById("player" + i + "total").style.backgroundColor = "lightblue";                  // remove any high score highlight
     if (parseInt(document.getElementById("player" + i + "total").innerHTML) > intHighScore) {
       intHighScore = parseInt(document.getElementById("player" + i + "total").innerHTML);
     }
@@ -137,7 +150,7 @@ function endRun() {
   if (intRunNumber == intMaxRuns) {
     document.getElementById("gameButton").disabled = false;
     if (!flgAlltimeUpdated) updateAlltime();
-    flgAlltimeUpdated = true;        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
+    flgAlltimeUpdated = true;        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<fudge
   } else {
     document.getElementById("runButton").disabled = false;
   }
@@ -145,16 +158,16 @@ function endRun() {
 
 function rollDie() {
   isRolling = true;
-  stickStickies();												// can't unstick now
+  stickStickies();// can't unstick now
   document.getElementById("rollButton").disabled = true;
-  intTurnsRemaining = intRollLength + (Math.random() < 0.5);               // add 'wobble' to keep 2-sided rolls random
+  intTurnsRemaining = intRollLength + (Math.random() < 0.5);                   // add 'wobble' to keep 2-sided rolls random
   intNextTurnSpeed = 0;
   intTurnDeceleration = Math.round(intLastTurnSpeed / intRollLength);
   turnDie();
 }
 
 function turnDie() {
-  var intFaceIndex = Math.floor(intChooseFrom * Math.random());      // arrays/strings are zero indexed
+  var intFaceIndex = Math.floor(intChooseFrom * Math.random());                // arrays/strings are zero indexed
   var strFace = strDieFaces[intFaceIndex];
   strDieFaces = strDieFaces.substring(0, intFaceIndex) + strDieFaces.substring(intFaceIndex + 1) + strDieFaces.charAt(intFaceIndex);    // send to the end
   document.getElementById("die").innerHTML = strFace;
@@ -162,12 +175,12 @@ function turnDie() {
   intNextTurnSpeed += intTurnDeceleration;        // slow down the die as it turns
   if (intTurnsRemaining) {                        // set up the next turn if required
     setTimeout(turnDie, intNextTurnSpeed);
-  } else {						// that was the last turn
+  } else {// that was the last turn
     intRollValue = parseInt(strFace);
      // update the roll record <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 //    let eltRollAccumX = document.getElementById("face" + intRollValue);
 //    ++eltRollAccumX.innerHTML;
-      if (intRollValue > 1) {
+    if (intRollValue > 1) {
       intRunningTotal += Math.floor(strFace);
       document.getElementById("rollButton").disabled = false;
     } else {
@@ -175,36 +188,54 @@ function turnDie() {
       endRun();
     }
     document.getElementById("runningTotal").innerHTML = intRunningTotal;
-		isRolling = false;
+    isRolling = false;
+  }
+}
+
+function playerClicked(intPlayerID) {
+  if (isPregame) {
+    fliphide(intPlayerID);
+  } else {
+    flipstick(intPlayerID);
+  }
+}
+
+function fliphide(intPlayerID) {
+  eltPlayerName = document.getElementById("player" + intPlayerID);
+  if (eltPlayerName.style.textDecoration == 'line-through') {
+    eltPlayerName.style.textDecoration = 'none';
+  } else {
+    eltPlayerName.style.textDecoration = 'line-through';
   }
 }
 
 function flipstick(intPlayerID) {
-  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "burlywood") {       // if stuck
-    unstick (intPlayerID);									    //  then unstick
+  if (document.getElementById("player" + intPlayerID).style.backgroundColor == "burlywood") {                                               // if stuck
+    unstick(intPlayerID);   //  then unstick
   } else if (isRunning && !isRolling && (document.getElementById("player" + intPlayerID).style.backgroundColor == "lightgreen")) {    	    // if game running, no die is rolling and player not stuck
-    stickify(intPlayerID);									    //   make sticky
+    stickify(intPlayerID);    //   make sticky
   }
 }
 
-function unstick(intPlayerID) {									   	// set status to running
+function unstick(intPlayerID) {
+  // set player status to running
   document.getElementById("player" + intPlayerID).style.backgroundColor = "lightgreen";
   var strRunCellID = "player" + intPlayerID + "run" + intRunNumber;
   document.getElementById(strRunCellID).innerHTML = '';
-	calcPlayerTotal(intPlayerID);
+  calcPlayerTotal(intPlayerID);
 }
 
 function stickify(intPlayerID) {
-  stick(intPlayerID);																																											// stick the player
-	if (isRunning) {
-  	document.getElementById("player" + intPlayerID).style.backgroundColor = "burlywood";									// if run still running flag player is only sticky not stuck
-	}
+  stick(intPlayerID);                        // stick the player
+  if (isRunning) {
+    document.getElementById("player" + intPlayerID).style.backgroundColor = "burlywood";                    // if run still running flag player is only sticky not stuck
+  }
 }
 
 function stickStickies() {
   for (var i = 1; i <= intNumberOfPlayers; i++) {
     if (document.getElementById("player" + i).style.backgroundColor == "burlywood") 
-    document.getElementById("player" + i).style.backgroundColor = "lightgrey";					// stick any sticky players
+    document.getElementById("player" + i).style.backgroundColor = "lightgrey";                           // stick any sticky players
   }
 }
 
@@ -332,8 +363,8 @@ Die is 1 to ...:<br>
 <div><!-- second column -->
 
 <table border  style="font-size:24px;">
-<tr>
-<td id="player1" style="background-color: lightgreen;" onClick="flipstick(1)">Player 1</td>
+<tr id="player1row">
+<td id="player1" style="background-color: lightgreen;" onClick="playerClicked(1)">Player 1</td>
 <td id="player1run1" width="30px" style="text-align: center;"></td>
 <td id="player1run2" width="30px" style="text-align: center;"></td>
 <td id="player1run3" width="30px" style="text-align: center;"></td>
@@ -348,8 +379,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player1alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player2" style="background-color: lightgreen;" onClick="flipstick(2)">Player 2</td>
+<tr id="player2row">
+<td id="player2" style="background-color: lightgreen;" onClick="playerClicked(2)">Player 2</td>
 <td id="player2run1" width="30px" style="text-align: center;"></td>
 <td id="player2run2" width="30px" style="text-align: center;"></td>
 <td id="player2run3" width="30px" style="text-align: center;"></td>
@@ -364,8 +395,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player2alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player3" style="background-color: lightgreen;" onClick="flipstick(3)">Player 3</td>
+<tr id="player3row">
+<td id="player3" style="background-color: lightgreen;" onClick="playerClicked(3)">Player 3</td>
 <td id="player3run1" width="30px" style="text-align: center;"></td>
 <td id="player3run2" width="30px" style="text-align: center;"></td>
 <td id="player3run3" width="30px" style="text-align: center;"></td>
@@ -380,8 +411,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player3alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player4" style="background-color: lightgreen;" onClick="flipstick(4)">Player 4</td>
+<tr id="player4row">
+<td id="player4" style="background-color: lightgreen;" onClick="playerClicked(4)">Player 4</td>
 <td id="player4run1" width="30px" style="text-align: center;"></td>
 <td id="player4run2" width="30px" style="text-align: center;"></td>
 <td id="player4run3" width="30px" style="text-align: center;"></td>
@@ -396,8 +427,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player4alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player5" style="background-color: lightgreen;" onClick="flipstick(5)">Player 5</td>
+<tr id="player5row">
+<td id="player5" style="background-color: lightgreen;" onClick="playerClicked(5)">Player 5</td>
 <td id="player5run1" width="30px" style="text-align: center;"></td>
 <td id="player5run2" width="30px" style="text-align: center;"></td>
 <td id="player5run3" width="30px" style="text-align: center;"></td>
@@ -412,8 +443,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player5alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player6" style="background-color: lightgreen;" onClick="flipstick(6)">Player 6</td>
+<tr id="player6row">
+<td id="player6" style="background-color: lightgreen;" onClick="playerClicked(6)">Player 6</td>
 <td id="player6run1" width="30px" style="text-align: center;"></td>
 <td id="player6run2" width="30px" style="text-align: center;"></td>
 <td id="player6run3" width="30px" style="text-align: center;"></td>
@@ -428,8 +459,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player6alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player7" style="background-color: lightgreen;" onClick="flipstick(7)">Player 7</td>
+<tr id="player7row">
+<td id="player7" style="background-color: lightgreen;" onClick="playerClicked(7)">Player 7</td>
 <td id="player7run1" width="30px" style="text-align: center;"></td>
 <td id="player7run2" width="30px" style="text-align: center;"></td>
 <td id="player7run3" width="30px" style="text-align: center;"></td>
@@ -444,8 +475,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player7alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player8" style="background-color: lightgreen;" onClick="flipstick(8)">Player 8</td>
+<tr id="player8row">
+<td id="player8" style="background-color: lightgreen;" onClick="playerClicked(8)">Player 8</td>
 <td id="player8run1" width="30px" style="text-align: center;"></td>
 <td id="player8run2" width="30px" style="text-align: center;"></td>
 <td id="player8run3" width="30px" style="text-align: center;"></td>
@@ -460,8 +491,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player8alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player9" style="background-color: lightgreen;" onClick="flipstick(9)">Player 9</td>
+<tr id="player9row">
+<td id="player9" style="background-color: lightgreen;" onClick="playerClicked(9)">Player 9</td>
 <td id="player9run1" width="30px" style="text-align: center;"></td>
 <td id="player9run2" width="30px" style="text-align: center;"></td>
 <td id="player9run3" width="30px" style="text-align: center;"></td>
@@ -476,8 +507,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player9alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player10" style="background-color: lightgreen;" onClick="flipstick(10)">Player 10</td>
+<tr id="player10row">
+<td id="player10" style="background-color: lightgreen;" onClick="playerClicked(10)">Player 10</td>
 <td id="player10run1" width="30px" style="text-align: center;"></td>
 <td id="player10run2" width="30px" style="text-align: center;"></td>
 <td id="player10run3" width="30px" style="text-align: center;"></td>
@@ -492,8 +523,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player10alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player11" style="background-color: lightgreen;" onClick="flipstick(11)">Player 11</td>
+<tr id="player11row">
+<td id="player11" style="background-color: lightgreen;" onClick="playerClicked(11)">Player 11</td>
 <td id="player11run1" width="30px" style="text-align: center;"></td>
 <td id="player11run2" width="30px" style="text-align: center;"></td>
 <td id="player11run3" width="30px" style="text-align: center;"></td>
@@ -508,8 +539,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player11alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player12" style="background-color: lightgreen;" onClick="flipstick(12)">Player 12</td>
+<tr id="player12row">
+<td id="player12" style="background-color: lightgreen;" onClick="playerClicked(12)">Player 12</td>
 <td id="player12run1" width="30px" style="text-align: center;"></td>
 <td id="player12run2" width="30px" style="text-align: center;"></td>
 <td id="player12run3" width="30px" style="text-align: center;"></td>
@@ -524,8 +555,8 @@ Die is 1 to ...:<br>
 <td width="60px" style="text-align: center;border-style: none;"></td>
 <td id="player12alltime" width="30px" style="background-color: tan; text-align: center;"></td>
 </tr>
-<tr>
-<td id="player13" style="background-color: lightgreen;" onClick="flipstick(13)">Player 13</td>
+<tr id="player13row">
+<td id="player13" style="background-color: lightgreen;" onClick="playerClicked(13)">Player 13</td>
 <td id="player13run1" width="30px" style="text-align: center;"></td>
 <td id="player13run2" width="30px" style="text-align: center;"></td>
 <td id="player13run3" width="30px" style="text-align: center;"></td>
