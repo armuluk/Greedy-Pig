@@ -1,0 +1,9 @@
+# https://EditorConfig.org/#example-file
+
+# top-most EditorConfig - won't search in parent dirs
+fileroot = true
+
+# match all files - specify with [*.py] or [*.{js,py}] - latest rules take precedence
+[*]
+indent_style = space
+indent_size = 2
