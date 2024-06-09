@@ -78,10 +78,24 @@ When a run ends:
 
 Hide player
 ===========
+Only available at the start of a new game before a run is started
 Can not be used when in a run
 When a saved list is used to populate the 'field' there may be a participant who is absent
 This function allows the participant's name to be hidden - i.e. removed from the field
 
+The croupier clicks on new game
+The game board with list of players is shown - no strikethrough is shown
+If Croupier clicks on a player 
+If there is no line through the player
+  a line is drawn through the player
+otherwise if there is a line
+  the line is removed
+when the croupier clicks on New Run
+All players with a line through them are hidden
+Play starts
+
+
+[Possible extension when have full editing]
 When Edit is selected
   All players - including 'scratched' players - are displayed on the scoreboard, formatted by status 'scratched' or 'stuck'
   An 'OK' button is shown
@@ -91,7 +105,7 @@ Any player's status can be flipped between 'scratched' and 'stuck'
 When 'OK' is clicked
   Only the 'stuck' players are displayed on the scoreboard
   The 'OK' is hidden
-  
+]
   
 
 
@@ -150,3 +164,27 @@ set score rank to rankValue
 Set index to point to the linked score link.
 Increment rankCount
 Until EndOfList reached
+
+
+Alltime ranking assignment
+==========================
+The difficulty of comparing players comes from the many variations possible:
+ Within a single group a player may miss a number of games;
+ The die used in different games can be different;
+ The die rolls and hence the possible runs are random, making some games low or high scoring.
+On the other hand everything is held equal for all players in a particular game
+This suggests that using pair results (win/draw/loss against every other player) gives the best ranking data.
+All pair / duel / H2H / singles / face off wins, losses and draws are recorded
+The ranking is calculated as a decimal from -1 to +1
+Where +1 is best (all wins) and -1 is worst (all losses)
+Wins count for +1, draws 0 and losses -1 points
+The sum of a player's points is divided by the total number of games to give -1 to +1
+This is the raw ranking
+The ranking is then normalised based on maximum number of games that any single player has played (results ignored)
+  e.g. if a player has a raw ranking of 
+Draws are used 
+Promotion/demotion
+Players with all wins (ignoring draws) are promoted to +1
+Players with all losses (ignoring draws) are demoted to -1
+All wins (ignoring draws) = +1
+All losses (ignoring draws) = -1
