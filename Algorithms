@@ -1,21 +1,27 @@
 Algorithms:
+==========
 
-Die
-===
+Spinner/Die
+===========
+Note: for visuals see https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function
+
 This is implemented as a form of spinner, displaying a single face at a time and simulating a roll or spin by displaying a sequence of faces one by one (‘teasers’), finally stopping on a face (the ‘outcome’ of the roll). The change from one face to another is called a ‘rotation’.
 
 The naïve implementation chooses the faces randomly, however this means that with 6 faces around a third of the time a face is repeated immediately during the ‘roll’. If there is no transition between the faces when they are being shown then this repetition appears as a stutter, with some faces seeming to show for longer than they should.
 
-To prevent this stutter happening in this implementation the faces shown most recently are excluded from selection. The number of faces excluded is user selected but must be at least 1 (to prevent stutter) and at most one less than the number of faces (otherwise no face could be chosen).
+To prevent this stutter happening the faces shown most recently are excluded from selection. The number of faces excluded is user selected but must be at least 1 (to prevent stutter) and at most one less than the number of faces (otherwise no face could be chosen).
 
 This strategy does however introduce a bias into the face selection, as not all faces have an equal chance of being selected at any one time. This is most apparent when using just two faces. In this case, excluding the most recent face forces the alternate face to be selected each time, leading to the deterministic sequence 1212121212… Since the face of the previous outcome is used as the starting face this therefore means the new outcome is fully determined by the number of rotations the die does before stopping.
 
-One possible strategy to prevent this would be to start each roll with a face chosen completely unbiasedly, however this still has the stutter issue, albeit limited to the start of the roll. Instead, a combined approach was used to address this issue.
+One possible strategy to prevent this would be to start each roll with a face chosen completely unbiasedly, however this still has the stutter issue (albeit limited to the start of the roll). So instead a combined approach is used.
 
 First, the length of the roll (i.e. the number rotations) is allowed to vary between rolls. The user can choose the range of the possible roll lengths. For example, the number of rotations could vary in the range between 9 and 12. Note that the width of the range could still allow some bias, for example with a two-faced die a range allowing between 6 and 8 rotations would favour the previous outcome being repeated by a ratio of 2:1.
 
-Second, the roll is generated backwards. Due to the symmetrical nature of the constraints - that a particular face cannot reappear for a specified number of rotations - a roll displayed in reverse is indistinguishable from one shown in the order generated. This allows the outcome to be generated unbiasedly. The preceding faces are generated from it and as these are essentially decorative and have no practical effect it doesn't matter that their likelihoods are biased. 
-Prevernt them running into the prev roll seq
+Second, the roll is generated 'backwards'. Due to the symmetrical nature of the constraints - that a particular face cannot reappear for a specified number of rotations - a roll displayed in reverse is indistinguishable from one shown in the order generated. This allows the outcome to be generated unbiasedly and then the preceding faces are generated in reverse order starting from that final face. As these teasers are for display purposes only and have no practical effect it doesn't matter that their likelihoods are biased.
+
+As only the current face is shown it is now simple to avoid a stutter at the start. If the final teaser is the same as the previous outcome then another teaser is generated. This is guaranteed to be different from the previous teaser and so will be different from the previous outcome. Note this ignores the exclusion rule chosen by the user.
+
+[If more faces are showing: when only have teasers to generate equal to exclusion length then add all the showing faces as if they have been selected most recently and temporarily increase the excluded length by the number of faces showing - e.g. if excluding last 5 faces and 3 faces are showing then when have five teasers left to generate flag the three showing faces as having just been selected and increase the exclusion to the last 8 faces.]
 
 Unstick
 =======
