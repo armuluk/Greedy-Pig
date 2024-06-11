@@ -263,7 +263,7 @@ function calcPlayerTotal(intPlayerID) {
 }
 	
 function isEveryoneStuck() {
-  var blnEveryoneStuck = true;                      // assume true then check if anyone isn't
+  let blnEveryoneStuck = true;                      // assume true then check if anyone isn't
   for (var i = 1; i <= intNumberOfPlayers; i++) {
     if (
       (document.getElementById("player" + i).style.backgroundColor == "lightgreen") 
